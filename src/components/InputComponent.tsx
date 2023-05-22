@@ -7,7 +7,7 @@ interface InputProps{
   type:string;
   label:string;
   placeholder:string;
-  value?:string;
+  value?:string|number;
   onChange?:ChangeHandler
 }
 export default function InputComponent(props:InputProps) {
