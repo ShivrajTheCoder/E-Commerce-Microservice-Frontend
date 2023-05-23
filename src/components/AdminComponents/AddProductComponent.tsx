@@ -37,7 +37,7 @@ export default function AddProductComponent() {
         console.log("HIii");
         const productData = new FormData();
         console.log(selectedImage, productValues);
-        if (selectedImage && name && price && description) {
+        if ( name && price && description) {
             // productData.append('file', selectedImage, selectedImage.name);
             // productData.append("name", name);
             // productData.append("price", price.toString());

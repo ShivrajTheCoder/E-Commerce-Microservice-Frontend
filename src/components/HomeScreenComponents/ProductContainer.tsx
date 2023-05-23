@@ -3,6 +3,7 @@ import ProductCard from '../ProductCard'
 import axios from 'axios';
 
 export default function ProductContainer() {
+    const [changes,setChanges]=useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const [products, setProducts] = useState<{
@@ -43,7 +44,7 @@ export default function ProductContainer() {
                     (!loading && products) && <div>
 
                         {products.map((product) => (
-                            <ProductCard key={product._id} product={product} />
+                            <ProductCard setChanges={setChanges} key={product._id} product={product} />
                         ))}
                     </div>
                 }

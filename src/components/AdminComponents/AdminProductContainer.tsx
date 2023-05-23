@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import AdminProductCard from './AdminProductCard';
 
 export default function AdminProductContainer() {
+    const [changes,setChanges]=useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const [products, setProducts] = useState<{
@@ -34,7 +35,7 @@ export default function AdminProductContainer() {
             setLoading(false);
         }
         fetchProuducts();
-    }, [])
+    }, [changes])
     return (
         <div>
             product container
@@ -43,7 +44,7 @@ export default function AdminProductContainer() {
                     (!loading && products) && <div>
 
                         {products.map((product) => (
-                            <AdminProductCard key={product._id} product={product} />
+                            <AdminProductCard setChanges={setChanges} key={product._id} product={product} />
                         ))}
                     </div>
                 }
