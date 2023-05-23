@@ -3,6 +3,10 @@ import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from "../store/reducers/cartActions";
+import { RootState } from '@/store/reducers';
+import { createAction } from '@reduxjs/toolkit';
 interface IProduct {
     _id: string;
     _v: number;
@@ -18,9 +22,25 @@ interface ProductCardProps {
     product: IProduct;
     setChanges: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
+interface ItemPayload {
+    _id: string;
+    qty: number;
+  }
 export default function ProductCard(props: ProductCardProps) {
     const { product, setChanges } = props;
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    console.log(cartItems);
+    const dispatch = useDispatch();
+
+    const addItem=createAction<ItemPayload>(actions.ADD_ITEM);
+    const addToCartHandler = () => {
+        const newItem = {
+            _id: product._id,
+            qty: 1,
+        }
+        dispatch(addItem(newItem));
+    }
+
     const onStarClick = async (
         nextValue: number,
         prevValue: number,
@@ -58,6 +78,7 @@ export default function ProductCard(props: ProductCardProps) {
                 onStarClick={onStarClick}
             />
             <p>Rating Count: {product.ratingCount}</p>
+            <button onClick={addToCartHandler}>Add to Cart</button>
             <ToastContainer />
         </div>
     );
