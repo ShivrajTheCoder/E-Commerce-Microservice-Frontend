@@ -35,7 +35,7 @@ export const cartReducer:Reducer<CartState, CartAction> =(state=initialState,act
     switch(action.type){
         case actions.ADD_ITEM:{
             const newItem=action.payload;
-            const existingItem=state.items.find((item)=> item._id=newItem._id);
+            const existingItem=state.items.find((item)=> item._id===newItem._id);
             if(!existingItem){
                 return {...state,items:[...state.items,newItem]}
             }
