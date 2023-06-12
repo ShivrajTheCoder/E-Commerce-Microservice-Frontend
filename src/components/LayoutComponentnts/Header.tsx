@@ -1,8 +1,12 @@
+import { RootState } from '@/store/reducers';
 import Link from 'next/link'
 import React from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BsFillPersonFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 export default function Header() {
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    console.log(cartItems,"cart sate");
     return (
         <nav className='flex mx-10 my-2'>
             <Link className=' font-extrabold font-mono text-2xl' href="/home">Online.Shopping</Link>

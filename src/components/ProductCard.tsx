@@ -3,9 +3,8 @@ import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as actions from "../store/reducers/cartActions";
-import { RootState } from '@/store/reducers';
 import { createAction } from '@reduxjs/toolkit';
 interface IProduct {
     _id: string;
@@ -28,8 +27,7 @@ interface ItemPayload {
 }
 export default function ProductCard(props: ProductCardProps) {
     const { product, setChanges } = props;
-    const cartItems = useSelector((state: RootState) => state.cart.items);
-    console.log(cartItems);
+    
     const dispatch = useDispatch();
 
     const addItem = createAction<ItemPayload>(actions.ADD_ITEM);

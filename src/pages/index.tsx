@@ -1,7 +1,22 @@
 import Link from "next/link";
 import InputComponent from "../components/InputComponent"
 import { useState } from 'react'
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { createAction } from "@reduxjs/toolkit";
+import * as actions from "../store/reducers/userActions";
+import { useRouter } from "next/router";
+import { RootState } from "@/store/reducers";
+interface LoginPayload{
+  userId:string;
+  token:string;
+}
 export default function Home() {
+  const router=useRouter();
+  const dispatch=useDispatch();
+  const user=useSelector((state:RootState)=>state.user);
+  console.log(user,"from the header");
+  const loggedInUser=createAction<LoginPayload>(actions.LOGIN_SUCCESS);
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
@@ -14,9 +29,27 @@ export default function Home() {
       [name]: value,
     }))
   }
-  const submitHandler = (e: React.SyntheticEvent) => {
+  const submitHandler =async (e: React.SyntheticEvent) => {
     e.preventDefault();
     console.log(inputValues);
+    if(email && password){
+      // password validation to be added
+      await axios.post(`http://localhost:8080/auth/signin`,{email,password})
+        .then(resp=>{
+          if(resp.status===200){
+            console.log("Logged in",resp.data)
+            const {userId,token}=resp.data;
+            dispatch(loggedInUser({userId,token}));
+            router.push("/home");
+          }
+          else{
+            console.log("Something went wrong!");
+          }
+        })
+        .catch(error=>{
+          console.log(error);
+        })
+    }
   }
   return (
     <main className="mx-10 mb-10 flex flex-col justify-center items-center ">
