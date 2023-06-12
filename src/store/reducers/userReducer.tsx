@@ -6,6 +6,7 @@ interface UserState{
     isLoggedin:boolean;
     userId:string;
     token:string;
+    isAdmin:false;
 }
 
 interface LoginInterface{
@@ -15,7 +16,8 @@ interface LoginInterface{
 const initialState:UserState={
     isLoggedin:false,
     userId:"",
-    token:""
+    token:"",
+    isAdmin:false,
 }
 interface LogoutInterface{
     type:typeof actions.LOGOUT_SUCCESS,
@@ -24,11 +26,11 @@ type UserAction=LoginInterface | LogoutInterface;
 export const userReducer:Reducer<UserState,UserAction>=(state=initialState,action)=>{
     switch(action.type){
         case actions.LOGIN_SUCCESS:{
-            const {token,userId}=action.payload;
-            return {isLoggedin:true,token,userId}
+            const {token,userId,isAdmin}=action.payload;
+            return {isLoggedin:true,token,userId,isAdmin}
         }
         case actions.LOGOUT_SUCCESS:
-            return {isLoggedin:false,token:"",userId:""}
+            return {isLoggedin:false,token:"",userId:"",isAdmin:false}
         default:
             return state;
     }

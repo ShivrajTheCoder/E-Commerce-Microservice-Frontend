@@ -10,6 +10,7 @@ import { RootState } from "@/store/reducers";
 interface LoginPayload{
   userId:string;
   token:string;
+  isAdmin:boolean;
 }
 export default function Home() {
   const router=useRouter();
@@ -38,8 +39,8 @@ export default function Home() {
         .then(resp=>{
           if(resp.status===200){
             console.log("Logged in",resp.data)
-            const {userId,token}=resp.data;
-            dispatch(loggedInUser({userId,token}));
+            const {userId,token,isAdmin}=resp.data;
+            dispatch(loggedInUser({userId,token,isAdmin}));
             router.push("/home");
           }
           else{

@@ -1,10 +1,21 @@
 import AddProductComponent from '@/components/AdminComponents/AddProductComponent'
 import AdminProductContainer from '@/components/AdminComponents/AdminProductContainer'
 import BannerComponent from '@/components/HomeScreenComponents/BannerComponent'
+import ProductContainer from '@/components/HomeScreenComponents/ProductContainer'
 import SearchBar from '@/components/HomeScreenComponents/SearchBar'
-import React from 'react'
+import { RootState } from '@/store/reducers'
+import { useRouter } from 'next/router'
+import React,{useEffect} from 'react'
+import { useSelector } from 'react-redux'
 
 export default function adminpanel() {
+  const user=useSelector((state:RootState)=>state.user);
+  const router=useRouter();
+  useEffect(()=>{
+    if(!(user.isAdmin && user.isLoggedin)){
+      router.push("/");
+    }
+  },[user]);
   return (
     <>
       <BannerComponent />
@@ -15,6 +26,7 @@ export default function adminpanel() {
         </div>
         <AddProductComponent />
         <AdminProductContainer />
+        <ProductContainer/>
       </main>
     </>
   )
