@@ -20,8 +20,8 @@ export default function Home() {
   }
   return (
     <main className="mx-10 mb-10 flex flex-col justify-center items-center ">
-      <section className="flex my-10 w-[60%] shadow-lg">
-        <div className="w-[70%]">
+      <section className="flex my-10 w-[60%] shadow-lg rounded-2xl">
+        <div className="w-[80%] ">
           <img className="h-[500px] w-full rounded-l-2xl" src="https://res.cloudinary.com/dushmacr8/image/upload/v1686564281/Micro-Ecommerce/homescreen/login_qkhhpd.jpg" alt="girl with headphone" />
         </div>
         
