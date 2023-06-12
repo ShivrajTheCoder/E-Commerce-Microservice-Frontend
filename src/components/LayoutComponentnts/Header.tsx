@@ -11,11 +11,21 @@ export default function Header() {
     return (
         <nav className='flex mx-10 my-2'>
             <Link className=' font-extrabold font-mono text-2xl' href="/home">Online.Shopping</Link>
-            <div className='mx-10 flex justify-center items-center'>
+            <div className='mx-10 flex justify-center items-center '>
                 {
-                    isAdmin && <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Panel</Link>
+                    isAdmin &&
+                    <>
+                        <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Panel</Link>
+                        <Link href={"/admin/adauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Auction</Link>
+                    </>
                 }
-                <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Auction</Link>
+                {
+                    !isAdmin && <Link href={"/auction/ongoinauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Auction</Link>
+                }
+                {/* temporary link*/}
+                <Link href={"/admin/adauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Auction</Link>
+                <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Panel</Link>
+                <Link href={"/admin/adauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Auction</Link>
             </div>
             <div className='ml-auto mx-2 flex'>
                 <Link href="/" className='mx-3 flex justify-center '><BsFillPersonFill size={30} style={{ color: "#03045e" }} /><span className='text-xl  font-semibold text-[#03045e]'>Account</span></Link>
