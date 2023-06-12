@@ -25,14 +25,14 @@ interface ProductCardProps {
 interface ItemPayload {
     _id: string;
     qty: number;
-  }
+}
 export default function ProductCard(props: ProductCardProps) {
     const { product, setChanges } = props;
     const cartItems = useSelector((state: RootState) => state.cart.items);
     console.log(cartItems);
     const dispatch = useDispatch();
 
-    const addItem=createAction<ItemPayload>(actions.ADD_ITEM);
+    const addItem = createAction<ItemPayload>(actions.ADD_ITEM);
     const addToCartHandler = () => {
         const newItem = {
             _id: product._id,
@@ -65,20 +65,27 @@ export default function ProductCard(props: ProductCardProps) {
             })
     };
     return (
-        <div className=''>
-            <img className='h-96' src={product.image_url} alt={product.name} />
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <p>Price: ${product.price}</p>
-            <p>Rating: {product.rating}</p>
-            <StarRatingComponent
-                name="productRating"
-                starCount={5}
-                value={product.rating}
-                onStarClick={onStarClick}
-            />
-            <p>Rating Count: {product.ratingCount}</p>
-            <button onClick={addToCartHandler}>Add to Cart</button>
+        <div className='rounded-b-xl bg-[#f6f6f6]'>
+            <img className='h-96 w-full rounded-t-xl' src={product.image_url} alt={product.name} />
+            <div className='p-5'>
+                <div className='flex font-bold text-xl'>
+                    <h2 className=''>{product.name}</h2>
+                    <p className='ml-auto mr-5'>₹{product.price}</p>
+                </div>
+
+                <p className='mt-3 font-semibold text-lg'>{product.description.substring(0, 150) + "..."}</p>
+                <div className='text-3xl flex  items-center'>
+                    <StarRatingComponent
+                        name="productRating"
+                        starCount={5}
+                        value={product.rating}
+                        onStarClick={onStarClick}
+                    />
+                    <p className='text-sm'>({product.ratingCount})</p>
+                </div>
+
+                <button className='font-bold mt-auto text-xl bg-black text-white hover:bg-white hover:text-black px-5 py-3 rounded-md' onClick={addToCartHandler}>Add to Cart</button>
+            </div>
             <ToastContainer />
         </div>
     );

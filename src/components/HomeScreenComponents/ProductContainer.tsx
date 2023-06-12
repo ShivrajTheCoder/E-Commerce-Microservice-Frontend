@@ -38,9 +38,9 @@ export default function ProductContainer() {
     }, [])
     return (
         
-            <section className='flex flex-col justify-center items-center w-full'>
+            <section className='flex flex-col justify-center mt-10 items-center w-full'>
                 {
-                    (!loading && products) && <div className='grid grid-cols-4 w-full'>
+                    (!loading && products) && <div className='grid grid-cols-4 gap-9 w-full'>
 
                         {products.map((product) => (
                             <ProductCard setChanges={setChanges} key={product._id} product={product} />
