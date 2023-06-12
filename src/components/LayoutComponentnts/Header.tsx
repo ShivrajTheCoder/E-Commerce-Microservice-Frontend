@@ -6,13 +6,20 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 export default function Header() {
     const user = useSelector((state: RootState) => state.user);
-    console.log(user,"user sate");
+    const isAdmin = user.isAdmin;
+    console.log(user, "user sate");
     return (
         <nav className='flex mx-10 my-2'>
             <Link className=' font-extrabold font-mono text-2xl' href="/home">Online.Shopping</Link>
+            <div className='mx-10 flex justify-center items-center'>
+                {
+                    isAdmin && <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Panel</Link>
+                }
+                <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Auction</Link>
+            </div>
             <div className='ml-auto mx-2 flex'>
-            <Link href="/home" className='mx-3 flex justify-center '><BsFillPersonFill size={30} style={{color:"#03045e"}}/><span className='text-xl  font-semibold text-[#03045e]'>Account</span></Link>
-            <Link href="/user/cart" className='flex'><AiOutlineShoppingCart size={30} style={{color:"#03045e"}}/> <span className='bg-red-500 text-white  rounded-full h-fit w-fit px-2'>2</span></Link>
+                <Link href="/" className='mx-3 flex justify-center '><BsFillPersonFill size={30} style={{ color: "#03045e" }} /><span className='text-xl  font-semibold text-[#03045e]'>Account</span></Link>
+                <Link href="/user/cart" className='flex'><AiOutlineShoppingCart size={30} style={{ color: "#03045e" }} /> <span className='bg-red-500 text-white  rounded-full h-fit w-fit px-2'>2</span></Link>
             </div>
         </nav>
     )
