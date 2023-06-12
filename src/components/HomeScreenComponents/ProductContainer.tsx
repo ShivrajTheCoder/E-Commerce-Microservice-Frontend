@@ -3,7 +3,7 @@ import ProductCard from '../ProductCard'
 import axios from 'axios';
 
 export default function ProductContainer() {
-    const [changes,setChanges]=useState(false);
+    const [changes, setChanges] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const [products, setProducts] = useState<{
@@ -37,11 +37,10 @@ export default function ProductContainer() {
         fetchProuducts();
     }, [])
     return (
-        <div>
-            product container
-            <section>
+        
+            <section className='flex flex-col justify-center items-center w-full'>
                 {
-                    (!loading && products) && <div>
+                    (!loading && products) && <div className='grid grid-cols-4 w-full'>
 
                         {products.map((product) => (
                             <ProductCard setChanges={setChanges} key={product._id} product={product} />
@@ -49,6 +48,5 @@ export default function ProductContainer() {
                     </div>
                 }
             </section>
-        </div>
     )
 }

@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import InputComponent from "../components/InputComponent"
 import { useState } from 'react'
 export default function Home() {
