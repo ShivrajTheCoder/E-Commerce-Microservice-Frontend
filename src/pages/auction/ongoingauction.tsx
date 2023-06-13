@@ -37,11 +37,11 @@ export default function ongoingauction() {
       })
   }, [])
   return (
-    <div>
-      <h1>On Going Auctions</h1>
+    <div className='mx-20 my-10 flex flex-col justify-center items-center'>
+      <h1 className='font-bold text-3xl my-10'>On Going Auctions</h1>
       {
         (!loading && aucItems) &&
-        <div>
+        <div className='grid grid-cols-4 gap-9 w-full'>
           {
             aucItems?.map(item => {
               return (<AuctionItemCard {...item} key={item._id}/>)

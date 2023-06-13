@@ -34,21 +34,27 @@ export default function AuctionItemCard(props: ItemProp) {
     const href = {
         pathname: '/auction/[aucItem]',
         query: queryParams,
-      };
+    };
     return (
-        <div>
-            <img src="" alt={img_url} />
+        <div className='rounded-b-xl bg-[#f6f6f6]'>
+            <img className='w-full rounded-t-xl' src={img_url} alt={name} />
             <h1>{name}</h1>
-
-            <div>
-                <h2>Starting Bid : {startingBid}</h2>
+            <div className='p-5'>
+                <h2 className='font-bold text-xl'>{name}</h2>
+                <div className='flex font-semibold text-lg'>
+                    <h2 className=''>Starting Bid</h2>
+                    <p className='ml-auto mr-5'>₹{startingBid}</p>
+                </div>
+                <div className='flex font-semibold text-lg'>
+                    <h2 className=''>Min. Bid</h2>
+                    <p className='ml-auto mr-5'>₹{minBidInc}</p>
+                </div>
+                <div className='flex font-semibold text-lg'>
+                    <h2 className=''>Starting at</h2>
+                    <p className='ml-auto mr-5'>{time}</p>
+                </div>
             </div>
-            <div>
-                <h2>Minimum Bid:{minBidInc}</h2>
-            </div>
-            {
-                <h1>{time}</h1>
-            }
+            
             <Link href={href} as={`/auction/${_id}`}>Join real</Link>
             {(areSameDate(targetDate, currentDate)) && <button>Join Now</button>}
             {
