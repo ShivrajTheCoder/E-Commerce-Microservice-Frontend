@@ -30,6 +30,7 @@ export default function AuctionItem() {
     const [loading, setLoading] = useState<boolean>(true);
     const [aucItem, setAucItem] = useState<AucItemInterface | undefined>();
     const [lastBidReceived, setLastBid] = useState<number | undefined>();
+    const [customBid, setCustomBid] = useState<string | undefined>("");
     const socketRef = useRef<any>(null);
 
     useEffect(() => {
@@ -73,10 +74,11 @@ export default function AuctionItem() {
             }
         };
 
-    }, [itemName, itemId, socketRef.current]);
+    }, [itemName, itemId, socketRef.current,customBid]);
 
     const sattaHandler = () => {
-        console.log(lastBidReceived, "this is the last bid received");
+        // console.log(lastBidReceived, "this is the last bid received");
+        console.log(Number(customBid),"cutom bid");
         if (aucItem && socketRef.current) {
             let lastBid: number;
             if (lastBidReceived) {
@@ -85,17 +87,55 @@ export default function AuctionItem() {
                 lastBid = aucItem.startingBid;
             }
             const bid = Number(lastBid) + Number(aucItem.minBidInc);
-            console.log(aucItem.minBidInc, bid);
-            socketRef.current.emit("bid:newbid", { bid, itemId, userId, itemName });
+            if (Number(customBid) && Number(customBid) > Number(aucItem.minBidInc)) {
+                socketRef.current.emit("bid:newbid", { bid: Number(customBid), itemId, userId, itemName });
+                console.log(Number(customBid),"cutom bid");
+            }
+            else {
+                socketRef.current.emit("bid:newbid", { bid, itemId, userId, itemName });
+                console.log(bid,"normal bid");
+            }
+            // console.log(aucItem.minBidInc, bid);
         } else {
             console.log("galat");
         }
+        setCustomBid("");
     };
 
     return (
-        <div>
-            I am an item
-            {(joined && !loading && aucItem) && <button onClick={sattaHandler}>satta laga</button>}
+        <div className='mx-20'>
+            {
+                (joined && !loading && aucItem) &&
+                <section className='my-20 w-fit bg-[#f6f6f6] p-5 rounded-md shadow-lg grid grid-cols-2'>
+                    <div>
+                        <img className='rounded-md' src="https://cdn.pixabay.com/photo/2023/06/07/12/51/insect-8047159_640.jpg" alt="auction item" />
+                        <h1 className='font-extrabold text-2xl mt-5 mb-3'>{aucItem.name}</h1>
+                        <div className='grid grid-cols-2 gap-5 font-bold text-xl my-2'>
+                            <div>Minimum Bid</div>
+                            <div>{aucItem.minBidInc}</div>
+                        </div>
+                        <div className='grid grid-cols-2 gap-5'>
+                            <input className='bg-white rounded-sm h-10 px-3 border-l-4 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-md' type="number" name="nextbid" id="nextbid" value={customBid?customBid:""}  placeholder='Custom Bid' onChange={(e) => {
+                                setCustomBid(e.target.value);
+                            }} />
+                            <button className='bg-black w-full shadow-md text-white font-bold text-lg px-4 py-2 rounded-sm' onClick={sattaHandler}>Next Bid</button>
+                        </div>
+                    </div>
+                    <div className='flex flex-col items-center w-full'>
+                        <h1 className='font-extrabold text-3xl'>Current Auction</h1>
+                        <div className='grid grid-cols-2 font-bold text-xl w-full mt-10'>
+                            <div className="flex justify-center items-center">Top Bid</div>
+                            <div className="flex justify-center items-center">{lastBidReceived ? lastBidReceived :aucItem.lastBid}</div>
+                        </div>
+                    </div>
+                </section>
+            }
+            {
+                !(joined && !loading && aucItem) &&
+                <div>
+                    The item is not available
+                </div>
+            }
         </div>
     );
 }

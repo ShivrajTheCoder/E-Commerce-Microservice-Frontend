@@ -36,9 +36,8 @@ export default function AuctionItemCard(props: ItemProp) {
         query: queryParams,
     };
     return (
-        <div className='rounded-b-xl bg-[#f6f6f6]'>
+        <div className='rounded-b-xl bg-[#f6f6f6] h-full'>
             <img className='w-full rounded-t-xl' src={img_url} alt={name} />
-            <h1>{name}</h1>
             <div className='p-5'>
                 <h2 className='font-bold text-xl'>{name}</h2>
                 <div className='flex font-semibold text-lg'>
@@ -53,15 +52,17 @@ export default function AuctionItemCard(props: ItemProp) {
                     <h2 className=''>Starting at</h2>
                     <p className='ml-auto mr-5'>{time}</p>
                 </div>
-            </div>
-            
-            <Link href={href} as={`/auction/${_id}`}>Join real</Link>
-            {(areSameDate(targetDate, currentDate)) && <button>Join Now</button>}
-            {
-                !areSameDate(targetDate, currentDate) && <div>
-                    <h2>Starting on: {date.toString()} {time}</h2>
+                {
+                    !areSameDate(targetDate, currentDate) &&
+                    <div className='flex font-semibold text-lg'>
+                        <h2 className=''>Starting on</h2>
+                        <p className='ml-auto mr-5'>{date.toString()}</p>
+                    </div>
+                }
+                <div className='mt-5 w-full'>
+                    {(areSameDate(targetDate, currentDate)) && <Link className='bg-black my-20 w-full  text-white font-bold text-lg px-4 py-3 rounded-md' href={href} as={`/auction/${_id}`}>Join real</Link>}
                 </div>
-            }
+            </div>
         </div>
     )
 }
