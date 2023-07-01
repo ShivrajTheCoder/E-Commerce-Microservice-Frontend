@@ -16,7 +16,7 @@ interface ItemProp extends AItem {
 }
 export default function AuctionItemCard(props: ItemProp) {
 
-
+//need to update the date stuff
 
     const { _id, name, startingBid, minBidInc, lastBid, img_url, date, time } = props;
     const parts = date.split('/');

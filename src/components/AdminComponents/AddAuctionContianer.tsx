@@ -1,29 +1,17 @@
 import InputComponent from '@/components/InputComponent';
 import axios from 'axios';
-import React, { useState } from 'react'
-import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import TimePicker from 'react-time-picker';
-import 'react-time-picker/dist/TimePicker.css';
+import React, { useState,ChangeEvent } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function AddAuctionContianer() {
     const [inputValues, setInputValues] = useState({
         name: "",
-        img_url: "",
         startingBid: "",
         minBidInc: "",
+        date: "",
+        time: "",
     })
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [selectedTime, setSelectedTime] = useState<string | null>(null);
-    const handleDateChange = (date: Date | null) => {
-        setSelectedDate(date);
-    };
-    const handleTimeChange = (value: string | string[] | null) => {
-        const time = value !== null ? value.toString() : ""; // Convert null to empty string
-        setSelectedTime(time);
-    };
-    const { name, img_url, startingBid, minBidInc } = inputValues;
+    const { name, startingBid, minBidInc, date, time } = inputValues;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setInputValues((prev) => ({
@@ -31,13 +19,27 @@ export default function AddAuctionContianer() {
             [name]: value,
         }))
     }
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setSelectedImage(event.target.files[0]);
+        }
+    };
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // console.log(inputValues, selectedDate, selectedTime);
-        if (name && img_url && startingBid && minBidInc && selectedDate && selectedTime) {
-            const data = {
-                ...inputValues, date: selectedDate.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }), time: selectedTime
-            };
+        if (name && selectedImage && startingBid && minBidInc && date && time) {
+            // const data = {
+            //     ...inputValues
+            // };
+            const data = new FormData();
+            data.append("name", name);
+            data.append("startingBid", startingBid);
+            data.append("minBidInc", minBidInc);
+            data.append("date", date);
+            data.append("time", time);
+            data.append("img",selectedImage);
             console.log(data);
             await axios.post(`http://localhost:8085/auction/createauction`, data)
                 .then(resp => {
@@ -67,15 +69,9 @@ export default function AddAuctionContianer() {
                         value={name}
                         onChange={handleChange}
                         placeholder="Enter name" />
-                    <InputComponent id="img_url"
-                        name="img_url"
-                        type="text"
-                        label="Image Url"
-                        value={img_url}
-                        onChange={handleChange}
-                        placeholder="Enter Image Url" />
                 </div>
                 <div className='grid grid-cols-2 gap-5'>
+
                     <InputComponent id="startingBid"
                         name="startingBid"
                         type="number"
@@ -92,22 +88,26 @@ export default function AddAuctionContianer() {
                         placeholder="Enter minimum Bid Increment" />
                 </div>
                 <div className='grid grid-cols-2'>
-                    <div>
-                        <label htmlFor="date" className='font-bold text-lg'>Date</label>
-                        <DatePicker id="date"
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            className="bg-white rounded-sm h-10 px-3 border-l-4 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
+                    <div className='grid grid-cols-2 gap-2'>
+                        <InputComponent id="date"
+                            name="date"
+                            type="date"
+                            label="Starting Date"
+                            value={date}
+                            onChange={handleChange}
+                            placeholder="Choose Date" />
+                        <InputComponent id="time"
+                            name="time"
+                            type="time"
+                            label="Minimum time"
+                            value={time}
+                            onChange={handleChange}
+                            placeholder="Enter time" />
                     </div>
-                    <div className='flex flex-col'>
-                        <label htmlFor="time" className='font-bold text-lg'>Time</label>
-                        <TimePicker
-                            id="time"
-                            value={selectedTime}
-                            onChange={handleTimeChange}
-                            className="bg-white rounded-sm h-10 px-3 border-l-4 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
+                    <div className='w-full h-fit py-3 flex flex-col'>
+                        <p className='font-bold text-lg  mx-5'>Product Image</p>
+                        <label htmlFor="img" className='bg-green-500 w-full text-white font-bold text-lg px-4 py-2 mx-5 rounded-md'>Choose Image</label>
+                        <input className='hidden' onChange={handleImageChange} type="file" name="img" id="img" />
                     </div>
                 </div>
                 <button className='bg-black my-5 w-fit mx-auto text-white font-bold text-lg px-4 py-3 rounded-md'>Schedule Auction</button>
