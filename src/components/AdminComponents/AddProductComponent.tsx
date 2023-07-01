@@ -37,18 +37,13 @@ export default function AddProductComponent() {
         console.log("HIii");
         const productData = new FormData();
         console.log(selectedImage, productValues);
-        if (name && price && description) {
-            // productData.append('file', selectedImage, selectedImage.name);
-            // productData.append("name", name);
-            // productData.append("price", price.toString());
-            // productData.append("description", description);
-            // const sendData = {
-            //     name: 'ldfjsdlf',
-            //     boobs: "lsfjdldsk"
-            // }
-            await axios.post(`http://localhost:8080/products/addproduct`, {
-                name, price, description
-            })
+        if (name && price && description && selectedImage) {
+            productData.append('img', selectedImage);
+            productData.append("name", name);
+            productData.append("price", price.toString());
+            productData.append("description", description);
+            
+            await axios.post(`http://localhost:8081/products/addproduct`,productData)
                 .then(response => {
                     if (response.status === 201 || response.status === 200) {
                         console.log(response, "sucess");
