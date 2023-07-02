@@ -4,7 +4,6 @@ interface IProduct {
     _id: string;
     qty:number;
 }
-
 interface CartState{
     items:IProduct[];
 }
@@ -20,7 +19,9 @@ interface AddItemInterface{
 
 interface RemoveItemInterface{
     type:typeof actions.REMOVE_ITEM,
-    payload:string,
+    payload:{
+        itemId:string;
+    },
 }
 
 interface UpdateQuantityInterface{
@@ -43,9 +44,10 @@ export const cartReducer:Reducer<CartState, CartAction> =(state=initialState,act
                 return state;
             }
         }
-        case actions.REMOVE_ITEM:{
-            const itemId=action.payload;
-            return {...state,items:state.items.filter((item)=>item._id !==itemId)};
+        case actions.REMOVE_ITEM: {
+            const {itemId} = action.payload;
+            const updatedItems = state.items.filter((item) => item._id !== itemId);
+            return { ...state, items: [...updatedItems] };
         }
         case actions.UPDATE_QT:{
             const {_id,qty}=action.payload;

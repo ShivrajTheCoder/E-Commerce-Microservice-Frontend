@@ -11,9 +11,9 @@ export default function cart() {
   // ]
   console.log(cartItems);
   return (
-    <main className='flex flex-row p-10 w-full'>
+    <main className='grid grid-cols-12 py-10 px-5 w-full'>
       {
-        (cartItems.length > 0) && <section>
+        (cartItems.length > 0) && <section className=' col-span-9'>
           {
             cartItems?.map(item => (
               <CartProductCard key={item._id} item={item} setSubtotal={setSubtotal}/>
@@ -23,7 +23,7 @@ export default function cart() {
       }
       {
         (cartItems.length > 0) &&
-        <div className='rounded-lg h-fit w-full p-10 text-white  bg-[#A3A4A1] font-bold text-xl'>
+        <div className='rounded-lg col-span-3 h-fit w-full p-10 text-white  bg-[#A3A4A1] font-bold text-xl'>
           Cart summary
           <p className='mb-3'>{Math.round(subTotal/2)} <span>({cartItems.length})</span></p>
           <button className='bg-[#ffd60a] text-black px-3 py-2 rounded-md my-auto'>Proceed To Buy</button>
