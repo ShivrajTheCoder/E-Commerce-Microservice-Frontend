@@ -49,9 +49,10 @@ export const cartReducer:Reducer<CartState, CartAction> =(state=initialState,act
         }
         case actions.UPDATE_QT:{
             const {_id,qty}=action.payload;
-            const updatedItems=state.items.map((item)=>
+            let updatedItems=state.items.map((item)=>
                 item._id===_id ? {...item,qty} :item
             )
+            updatedItems = updatedItems.filter((item) => item.qty > 0);
             return {...state,items:updatedItems};
         }
         default: return state;
