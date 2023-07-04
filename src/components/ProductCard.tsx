@@ -36,25 +36,35 @@ export default function ProductCard(props: ProductCardProps) {
             ...product,
             qty: 1,
         }
-        if (!localStorage.getItem("onlineShoppingCart")) {
-            // If it doesn't exist, create a new array with newItem and store it
-            localStorage.setItem("onlineShoppingCart", JSON.stringify([newItem]));
-        } else {
-            // If it exists, retrieve the stored items
-            let storedItems: string | null = localStorage.getItem("onlineShoppingCart");
+        // if (!localStorage.getItem("onlineShoppingCart")) {
+        //     // If it doesn't exist, create a new array with newItem and store it
+        //     localStorage.setItem("onlineShoppingCart", JSON.stringify([newItem]));
+        // } else {
+        //     // If it exists, retrieve the stored items
+        //     let storedItems: string | null = localStorage.getItem("onlineShoppingCart");
 
-            if (storedItems) {
-                const parsedItems = JSON.parse(storedItems);
-                if (Array.isArray(parsedItems)) {
-                    storedItems = JSON.stringify([...parsedItems, newItem]);
-                } else {
-                    storedItems = JSON.stringify([newItem]);
-                }
-            } else {
-                storedItems = JSON.stringify([newItem]);
-            }
-            localStorage.setItem("onlineShoppingCart", storedItems);
-        }
+        //     if (storedItems) {
+        //         const parsedItems = JSON.parse(storedItems);
+        //         if (Array.isArray(parsedItems)) {
+        //             // Check if the item with the same _id already exists
+        //             const existingItem = parsedItems.find((item: IProduct) => item._id === newItem._id);
+
+        //             if (!existingItem) {
+        //                 storedItems = JSON.stringify([...parsedItems, newItem]);
+        //             } else {
+        //                 // Item with the same _id already exists, no need to add it again
+        //                 return;
+        //             }
+        //         } else {
+        //             storedItems = JSON.stringify([newItem]);
+        //         }
+        //     } else {
+        //         storedItems = JSON.stringify([newItem]);
+        //     }
+
+        //     localStorage.setItem("onlineShoppingCart", storedItems);
+        // }
+
         dispatch(addItem(newItem));
     }
 

@@ -65,7 +65,7 @@ const RazorpayButton = (): JSX.Element => {
     loadRazorpay();
   }, []);
 
-  return <button id="rzp-button1">Pay</button>;
+  return <button id="rzp-button1" className='py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-3'>Proceed To Pay</button>;
 };
 
 export default RazorpayButton;

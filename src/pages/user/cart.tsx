@@ -1,30 +1,72 @@
 import CartProductCard from '@/components/CartComponents/CartProductCard';
 import { RootState } from '@/store/reducers';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-interface IProduct{
-  _id:string;
-  name:string;
-  price:number;
-  description:string;
-  rating:number;
-  ratingCount:number;
-  image_url:string;
+interface IProduct {
+  _id: string;
+  name: string;
+  price: number;
+  description: string;
+  rating: number;
+  ratingCount: number;
+  image_url: string;
+  qty: number;
+}
+interface IOrder {
+  _id: string;
+  qty: number;
 }
 export default function cart() {
   const [subTotal, setSubtotal] = useState<number>(0);
+  const [cartLocal, setCartLocal] = useState<IProduct[]>([]);
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const isLoggedin=useSelector((state:RootState)=>state.user.isLoggedin);
+  const user = useSelector((state: RootState) => state.user);
   console.log(cartItems, 'from the cart');
-  useEffect(()=>{
+  const router = useRouter();
+  useEffect(() => {
     setSubtotal(0);
     cartItems.forEach(item => {
-      setSubtotal((prev)=>prev+(item.price*item.qty));
+      setSubtotal((prev) => prev + (item.price * item.qty));
     });
-  },[cartItems])
-  const handleProceedToBuy=()=>{
-
+    const fetchFromLocal = () => {
+      let cartItemsLocal = localStorage.getItem("onlineShoppingCart");
+      if (cartItemsLocal) {
+        cartItemsLocal = JSON.parse(cartItemsLocal);
+        if (Array.isArray(cartItemsLocal))
+          setCartLocal([...cartItemsLocal]);
+      }
+      console.log(cartItems, "from local")
+    }
+    fetchFromLocal();
+  }, [cartItems])
+  const handleProceedToBuy = async () => {
+    console.log("I was clicked", user);
+    if (cartItems.length < 1) {
+      return;
+    }
+    if (!user.isLoggedin || !user.userId) {
+      console.log(true);
+      router.push("/");
+    }
+    else {
+      let productIds: IOrder[] = [];
+      const { userId } = user;
+      cartItems.forEach(item => {
+        const { _id, qty } = item;
+        productIds.push({ _id, qty });
+      })
+      const orderData = { prod: productIds, userId };
+      console.log(orderData);
+      try {
+        const resp = await axios.post(`http://localhost:8081/products/products/buy`, orderData)
+        console.log(resp.data);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
   }
   return (
     <main className='grid grid-cols-12 py-10 px-5 w-full'>
@@ -32,7 +74,7 @@ export default function cart() {
         (cartItems.length > 0) && <section className=' col-span-9'>
           {
             cartItems?.map(item => (
-              <CartProductCard key={item._id} item={item}  />
+              <CartProductCard key={item._id} item={item} />
             ))
           }
         </section>
