@@ -33,7 +33,7 @@ export default function ProductCard(props: ProductCardProps) {
     const addItem = createAction<ItemPayload>(actions.ADD_ITEM);
     const addToCartHandler = () => {
         const newItem = {
-            _id: product._id,
+            ...product,
             qty: 1,
         }
         dispatch(addItem(newItem));

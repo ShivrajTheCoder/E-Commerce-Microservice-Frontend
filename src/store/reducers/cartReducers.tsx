@@ -2,6 +2,12 @@ import * as actions from "./cartActions";
 import { Reducer } from 'redux';
 interface IProduct {
     _id: string;
+    name: string;
+    price: number;
+    description: string;
+    rating: number;
+    ratingCount: number;
+    image_url: string;
     qty:number;
 }
 interface CartState{
@@ -35,7 +41,8 @@ type CartAction=AddItemInterface|RemoveItemInterface| UpdateQuantityInterface;
 export const cartReducer:Reducer<CartState, CartAction> =(state=initialState,action)=>{
     switch(action.type){
         case actions.ADD_ITEM:{
-            const newItem=action.payload;
+            let newItem=action.payload;
+            newItem={...newItem,qty:1};
             const existingItem=state.items.find((item)=> item._id===newItem._id);
             if(!existingItem){
                 return {...state,items:[...state.items,newItem]}
