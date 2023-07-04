@@ -27,7 +27,7 @@ interface ItemPayload {
 }
 export default function ProductCard(props: ProductCardProps) {
     const { product, setChanges } = props;
-    
+
     const dispatch = useDispatch();
 
     const addItem = createAction<ItemPayload>(actions.ADD_ITEM);
@@ -35,6 +35,25 @@ export default function ProductCard(props: ProductCardProps) {
         const newItem = {
             ...product,
             qty: 1,
+        }
+        if (!localStorage.getItem("onlineShoppingCart")) {
+            // If it doesn't exist, create a new array with newItem and store it
+            localStorage.setItem("onlineShoppingCart", JSON.stringify([newItem]));
+        } else {
+            // If it exists, retrieve the stored items
+            let storedItems: string | null = localStorage.getItem("onlineShoppingCart");
+
+            if (storedItems) {
+                const parsedItems = JSON.parse(storedItems);
+                if (Array.isArray(parsedItems)) {
+                    storedItems = JSON.stringify([...parsedItems, newItem]);
+                } else {
+                    storedItems = JSON.stringify([newItem]);
+                }
+            } else {
+                storedItems = JSON.stringify([newItem]);
+            }
+            localStorage.setItem("onlineShoppingCart", storedItems);
         }
         dispatch(addItem(newItem));
     }
