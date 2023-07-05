@@ -34,8 +34,10 @@ interface UpdateQuantityInterface{
     type:typeof actions.UPDATE_QT,
     payload:{_id:string; qty:number}
 }
-
-type CartAction=AddItemInterface|RemoveItemInterface| UpdateQuantityInterface;
+interface ClearCartInterface{
+    type:typeof actions.CLEAR_CART,
+};
+type CartAction=AddItemInterface|RemoveItemInterface| UpdateQuantityInterface |ClearCartInterface;
 
 
 export const cartReducer:Reducer<CartState, CartAction> =(state=initialState,action)=>{
@@ -63,6 +65,9 @@ export const cartReducer:Reducer<CartState, CartAction> =(state=initialState,act
             )
             updatedItems = updatedItems.filter((item) => item.qty > 0);
             return {...state,items:updatedItems};
+        }
+        case actions.CLEAR_CART:{
+            return {items:[]};
         }
         default: return state;
     }

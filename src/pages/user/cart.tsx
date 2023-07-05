@@ -1,8 +1,10 @@
 import CartProductCard from '@/components/CartComponents/CartProductCard';
 import { RootState } from '@/store/reducers';
+import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
+import * as actions from "../../store/reducers/cartActions";
 import { useSelector, useDispatch } from 'react-redux';
 interface IProduct {
   _id: string;
@@ -19,12 +21,15 @@ interface IOrder {
   qty: number;
 }
 export default function cart() {
+  const router=useRouter();
   const [subTotal, setSubtotal] = useState<number>(0);
   const [cartLocal, setCartLocal] = useState<IProduct[]>([]);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const user = useSelector((state: RootState) => state.user);
+  const dispatch=useDispatch();
   console.log(cartItems, 'from the cart');
-  const router = useRouter();
+
+  const clearCart=createAction(actions.CLEAR_CART);
   useEffect(() => {
     setSubtotal(0);
     cartItems.forEach(item => {
@@ -62,6 +67,10 @@ export default function cart() {
       try {
         const resp = await axios.post(`http://localhost:8081/products/products/buy`, orderData)
         console.log(resp.data);
+        if(resp.status===200){
+          dispatch(clearCart());
+          router.push("/user/myorders");
+        }
       }
       catch (err) {
         console.log(err);

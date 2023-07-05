@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const RazorpayButton = (): JSX.Element => {
+const RazorpayButton = ({totalPrice,id,or_id}:any): JSX.Element => {
+  const router=useRouter();
   useEffect(() => {
     const loadRazorpay = async (): Promise<void> => {
       const script = document.createElement('script');
@@ -11,14 +13,13 @@ const RazorpayButton = (): JSX.Element => {
 
       script.onload = () => {
         const options = {
-          key: 'rzp_test_Xl6m3LJjUmLNas', // Enter the Key ID generated from the Dashboard
-          amount: '50000', // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          key: 'rzp_test_sFSldafHF33EGU', // Enter the Key ID generated from the Dashboard
+          amount: totalPrice*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
           currency: 'INR',
-          name: 'Ecommerce', // Your business name
+          name: 'Online-Shopping', // Your business name
           description: 'Test Transaction',
-          image: 'https://example.com/your_logo',
-          order_id: 'order_LxlS9IbTcb1kxK', // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-          callback_url: 'https://eneqd3r9zrjok.x.pipedream.net/',
+          image: 'https://static.vecteezy.com/system/resources/thumbnails/011/401/535/small/online-shopping-trolley-click-and-collect-order-logo-design-template-vector.jpg',
+          order_id: id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
           prefill: {
             name: 'Gaurav Kumar', // Your customer's name
             email: 'gaurav.kumar@example.com',
@@ -49,10 +50,10 @@ const RazorpayButton = (): JSX.Element => {
           };
           const body=JSON.stringify(paymentData);
           // Send the paymentData to your backend API
-          await axios.post('/api/payment-success',body)
+          await axios.post(`https://localhost:8080/successpayment/${or_id}`,body)
             .then((data) => {
               // Handle the response from the backend if needed
-              console.log(data);
+              console.log(data.data,"response from backend");
             })
             .catch((error) => {
               // Handle any error that occurs during the API request
@@ -65,7 +66,7 @@ const RazorpayButton = (): JSX.Element => {
     loadRazorpay();
   }, []);
 
-  return <button id="rzp-button1" className='py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-3'>Proceed To Pay</button>;
+  return <button id="rzp-button1" className='py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-3'>Razorpay</button>;
 };
 
 export default RazorpayButton;

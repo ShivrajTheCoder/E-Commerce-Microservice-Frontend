@@ -38,6 +38,9 @@
   "devDependencies": {
     "@types/react-datepicker": "^4.11.2",
     "@types/react-select": "^5.0.1",
-    "@types/socket.io-client": "^3.0.0"
+    "@types/socket.io-client": "^3.0.0",
+    "@types/uuid": "^9.0.2",
+    "i": "^0.3.7",
+    "npm": "^9.7.2"
   }
 }

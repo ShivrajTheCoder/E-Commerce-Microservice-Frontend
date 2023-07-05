@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import RazorpayButton from '../PaymentComponent/RazorpayButton';
 interface IOrder {
   payment: boolean;
@@ -24,10 +25,33 @@ interface IProduct {
 }
 export default function OrderCard({ order }: OrderProps) {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [rzOrder, rzSetOrder] = useState<any>();
   useEffect(() => {
     setProducts(JSON.parse(order.products));
     // console.log(products);
   }, [order]);
+
+  const createOrder = async () => {
+    console.log("Pya");
+    const { totalPrice } = order;
+    try {
+      const resp = await axios.post(`http://localhost:8080/payment/newpayment`, {
+        amount: totalPrice,
+      })
+
+      if (resp.status === 200) {
+        console.log(resp.data);
+        const { order } = resp.data;
+        rzSetOrder(order);
+      }
+      else {
+        console.log("something went wrong!");
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <div className='p-5 bg-white'>
       <h1 className='py-2 text-3xl font-bold'>Order Id: OnS{order._id}</h1>
@@ -59,10 +83,13 @@ export default function OrderCard({ order }: OrderProps) {
       <div>
         <h1 className='font-bold text-xl'>Payment Status <span className='font-semibold text-lg'>{order.payment ? "Payed" : "Not Payed"}</span></h1>
         {
-          !order.payment &&
-          <RazorpayButton />
+          (!order.payment && !rzOrder) &&
+          <button className='py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-3' onClick={createOrder}>Proceed To Pay</button>
         }
-
+        {
+          (!order.payment && rzOrder) && 
+          <RazorpayButton totalPrice={order.totalPrice} order_id={rzOrder.id} or_id={order._id}/>
+        }
       </div>
     </div>
   );
