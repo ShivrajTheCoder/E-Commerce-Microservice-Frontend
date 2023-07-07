@@ -19,13 +19,13 @@ export default function AuctionItemCard(props: ItemProp) {
 //need to update the date stuff
 
     const { _id, name, startingBid, minBidInc, lastBid, img_url, date, time } = props;
-    const parts = date.split('/');
+    const parts = date.split('-');
     const areSameDate = (date1: Date, date2: Date) => {
         return (date1.getFullYear() === date2.getFullYear() &&
             date1.getMonth() === date2.getMonth() &&
             date1.getDate() === date2.getDate());
     }
-    const targetDate = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0])); // Set time to 00:00:00
+    const targetDate = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2])); // Set time to 00:00:00
     // Get the current date without time
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
