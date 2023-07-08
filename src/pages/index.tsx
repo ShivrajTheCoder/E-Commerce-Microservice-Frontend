@@ -16,7 +16,7 @@ export default function Home() {
   const router=useRouter();
   const dispatch=useDispatch();
   const user=useSelector((state:RootState)=>state.user);
-  console.log(user,"from the header");
+  // console.log(user,"from the header");
   const loggedInUser=createAction<LoginPayload>(actions.LOGIN_SUCCESS);
   const [inputValues, setInputValues] = useState({
     email: "",
