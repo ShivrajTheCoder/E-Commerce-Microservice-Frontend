@@ -1,3 +1,4 @@
+import TreandingProductsComponent from '@/components/TreandingProductsComponent';
 import { RootState } from '@/store/reducers';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -18,6 +19,7 @@ interface AucItemInterface {
     img_url: string;
     date: string;
     time: string;
+    description: string;
 }
 
 export default function AuctionItem() {
@@ -34,8 +36,8 @@ export default function AuctionItem() {
 
     useEffect(() => {
 
-        const checkLogin=()=>{
-            if(!userId){
+        const checkLogin = () => {
+            if (!userId) {
                 router.push("/");
             }
         }
@@ -80,7 +82,7 @@ export default function AuctionItem() {
             }
         };
 
-    }, [itemName, itemId, socketRef.current,customBid,userId]);
+    }, [itemName, itemId, socketRef.current, customBid, userId]);
 
     const sattaHandler = () => {
         // console.log(lastBidReceived, "this is the last bid received");
@@ -96,14 +98,14 @@ export default function AuctionItem() {
             const bid = Number(lastBid) + Number(aucItem.minBidInc);
             if (Number(customBid) && Number(customBid) > Number(aucItem.minBidInc)) {
                 socketRef.current.emit("bid:newbid", { bid: Number(customBid), itemId, userId, itemName });
-                console.log(Number(customBid),"cutom bid");
+                console.log(Number(customBid), "cutom bid");
             }
             else {
                 socketRef.current.emit("bid:newbid", { bid, itemId, userId, itemName });
-                console.log(bid,"normal bid");
+                console.log(bid, "normal bid");
             }
             // console.log(aucItem.minBidInc, bid);
-        } 
+        }
         // else {
         //     console.log("galat");
         // }
@@ -117,24 +119,27 @@ export default function AuctionItem() {
                 <section className='my-20 w-fit bg-[#f6f6f6] p-5 rounded-md shadow-lg grid grid-cols-2'>
                     <div>
                         <img className='rounded-md' src={aucItem.img_url} alt="auction item" />
+                    </div>
+                    <div className='flex flex-col items-center w-full'>
+                        <h1 className='font-extrabold text-3xl'>Current Auction</h1>
                         <h1 className='font-extrabold text-2xl mt-5 mb-3'>{aucItem.name}</h1>
                         <div className='grid grid-cols-2 gap-5 font-bold text-xl my-2'>
                             <div>Minimum Bid</div>
                             <div>{aucItem.minBidInc}</div>
                         </div>
                         <div className='grid grid-cols-2 gap-5'>
-                            <input className='bg-white rounded-sm h-10 px-3 border-l-4 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-md' type="number" name="nextbid" id="nextbid" value={customBid?customBid:""}  placeholder='Custom Bid' onChange={(e) => {
+                            <input className='bg-white rounded-sm h-10 px-3 border-l-4 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-md' type="number" name="nextbid" id="nextbid" value={customBid ? customBid : ""} placeholder='Custom Bid' onChange={(e) => {
                                 setCustomBid(e.target.value);
                             }} />
                             <button className='bg-black w-full shadow-md text-white font-bold text-lg px-4 py-2 rounded-sm' onClick={sattaHandler}>Next Bid</button>
                         </div>
-                    </div>
-                    <div className='flex flex-col items-center w-full'>
-                        <h1 className='font-extrabold text-3xl'>Current Auction</h1>
                         <div className='grid grid-cols-2 font-bold text-xl w-full mt-10'>
                             <div className="flex justify-center items-center">Top Bid</div>
-                            <div className="flex justify-center items-center">{lastBidReceived ? lastBidReceived :aucItem.lastBid}</div>
+                            <div className="flex justify-center items-center">{lastBidReceived ? lastBidReceived : aucItem.lastBid}</div>
                         </div>
+                    </div>
+                    <div className='col-span-2 my-2 text-xl font-semibold'>
+                        <p>{aucItem.description}</p>
                     </div>
                 </section>
             }
@@ -146,5 +151,5 @@ export default function AuctionItem() {
             }
         </div>
     );
-    
+
 }

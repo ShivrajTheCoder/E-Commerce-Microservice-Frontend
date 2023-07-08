@@ -10,6 +10,7 @@ interface AItem {
   img_url: string;
   date: string;
   time: string;
+  description:string;
 }
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -41,7 +42,7 @@ export default function ongoingauction() {
       <h1 className='font-bold text-3xl my-10'>On Going Auctions</h1>
       {
         (!loading && aucItems) &&
-        <div className='grid grid-cols-4 gap-9 w-full'>
+        <div className=' w-full my-3'>
           {
             aucItems?.map(item => {
               return (<AuctionItemCard {...item} key={item._id}/>)

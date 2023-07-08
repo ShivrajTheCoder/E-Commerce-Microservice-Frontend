@@ -1,6 +1,6 @@
 import InputComponent from '@/components/InputComponent';
 import axios from 'axios';
-import React, { useState,ChangeEvent } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function AddAuctionContianer() {
@@ -10,8 +10,9 @@ export default function AddAuctionContianer() {
         minBidInc: "",
         date: "",
         time: "",
+        description: "",
     })
-    const { name, startingBid, minBidInc, date, time } = inputValues;
+    const { name, startingBid, minBidInc, date, time,description } = inputValues;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setInputValues((prev) => ({
@@ -26,10 +27,17 @@ export default function AddAuctionContianer() {
             setSelectedImage(event.target.files[0]);
         }
     };
+    const handleDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setInputValues((prev) => ({
+            ...prev,
+            [name]: value,
+        }))
+    }
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // console.log(inputValues, selectedDate, selectedTime);
-        if (name && selectedImage && startingBid && minBidInc && date && time) {
+        if (name && selectedImage && startingBid && minBidInc && date && time && description) {
             // const data = {
             //     ...inputValues
             // };
@@ -39,7 +47,8 @@ export default function AddAuctionContianer() {
             data.append("minBidInc", minBidInc);
             data.append("date", date);
             data.append("time", time);
-            data.append("img",selectedImage);
+            data.append("img", selectedImage);
+            data.append("description",description);
             console.log(data);
             await axios.post(`http://localhost:8085/auction/createauction`, data)
                 .then(resp => {
@@ -69,6 +78,19 @@ export default function AddAuctionContianer() {
                         value={name}
                         onChange={handleChange}
                         placeholder="Enter name" />
+                </div>
+                <div className='flex flex-col'>
+                    <label htmlFor="description" className='font-bold text-lg'>Description</label>
+                    <textarea
+                        className='rounded-sm bg-white px-3 border-l-4 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+                        id="description"
+                        name="description"
+                        value={description}
+                        onChange={handleDescChange}
+                        placeholder="Enter description"
+                        cols={30}
+                        rows={10}
+                    ></textarea>
                 </div>
                 <div className='grid grid-cols-2 gap-5'>
 

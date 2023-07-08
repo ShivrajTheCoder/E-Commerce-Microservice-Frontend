@@ -9,6 +9,7 @@ interface AItem {
     img_url: string;
     date: string;
     time: string;
+    description: string;
 }
 
 interface ItemProp extends AItem {
@@ -16,9 +17,9 @@ interface ItemProp extends AItem {
 }
 export default function AuctionItemCard(props: ItemProp) {
 
-//need to update the date stuff
+    //need to update the date stuff
 
-    const { _id, name, startingBid, minBidInc, lastBid, img_url, date, time } = props;
+    const { _id, name, startingBid, minBidInc, lastBid, img_url, date, time, description } = props;
     const parts = date.split('-');
     const areSameDate = (date1: Date, date2: Date) => {
         return (date1.getFullYear() === date2.getFullYear() &&
@@ -36,20 +37,21 @@ export default function AuctionItemCard(props: ItemProp) {
         query: queryParams,
     };
     return (
-        <div className='rounded-b-xl bg-[#f6f6f6] h-full'>
-            <img className='w-full rounded-t-xl' src={img_url} alt={name} />
-            <div className='p-5'>
-                <h2 className='font-bold text-xl'>{name}</h2>
+        <div className='rounded-b-xl grid grid-cols-12 p-5 bg-[#f6f6f6] h-full'>
+            <img className='w-full h-full col-span-6 rounded-xl' src={img_url} alt={name} />
+            <div className='p-5 col-span-6'>
+                <h2 className='font-bold text-3xl'>{name}</h2>
+                <p className='font-semibold text-lg my-2'>{description}</p>
                 <div className='flex font-semibold text-lg'>
-                    <h2 className=''>Starting Bid</h2>
+                    <h2 className='font-bold text-xl'>Starting Bid</h2>
                     <p className='ml-auto mr-5'>₹{startingBid}</p>
                 </div>
                 <div className='flex font-semibold text-lg'>
-                    <h2 className=''>Min. Bid</h2>
+                    <h2 className='font-bold text-xl'>Min. Bid</h2>
                     <p className='ml-auto mr-5'>₹{minBidInc}</p>
                 </div>
                 <div className='flex font-semibold text-lg'>
-                    <h2 className=''>Starting at</h2>
+                    <h2 className='font-bold text-xl'>Timings</h2>
                     <p className='ml-auto mr-5'>{time}</p>
                 </div>
                 {
@@ -60,7 +62,7 @@ export default function AuctionItemCard(props: ItemProp) {
                     </div>
                 }
                 <div className='mt-5 w-full'>
-                    {(areSameDate(targetDate, currentDate)) && <Link className='bg-black my-20 w-full  text-white font-bold text-lg px-4 py-3 rounded-md' href={href} as={`/auction/${_id}`}>Join real</Link>}
+                    {(areSameDate(targetDate, currentDate)) && <Link className='bg-black my-20 w-full  text-white font-bold text-lg px-4 py-3 rounded-md' href={href} as={`/auction/${_id}`}>Join Auction</Link>}
                 </div>
             </div>
         </div>
