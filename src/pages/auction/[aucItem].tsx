@@ -25,7 +25,6 @@ export default function AuctionItem() {
     const userId = useSelector((state: RootState) => state.user.userId);
     const { itemName, itemId } = router.query;
     console.log(itemName, itemId)
-
     const [joined, setJoined] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [aucItem, setAucItem] = useState<AucItemInterface | undefined>();
@@ -34,6 +33,13 @@ export default function AuctionItem() {
     const socketRef = useRef<any>(null);
 
     useEffect(() => {
+
+        const checkLogin=()=>{
+            if(!userId){
+                router.push("/");
+            }
+        }
+        checkLogin();
         const socket = io('http://localhost:8085');
         socketRef.current = socket;
 
@@ -42,7 +48,7 @@ export default function AuctionItem() {
 
         const handleNewBid = (payload: NewBid) => {
             console.log('New bid received:', payload);
-            console.log(payload);
+            // console.log(payload);
             const { amount, itemId } = payload;
             setLastBid(Number(amount));
             // Handle the new bid event for the specific room here
@@ -54,8 +60,8 @@ export default function AuctionItem() {
             try {
                 const response = await axios.get(`http://localhost:8085/auction/getitem/${itemId}`);
                 if (response.status === 200) {
-                    console.log(response.data.result);
-                    setAucItem(response.data.result);
+                    console.log(response.data.result[0]);
+                    setAucItem(response.data.result[0]);
                 } else {
                     console.log("error");
                 }
@@ -74,11 +80,11 @@ export default function AuctionItem() {
             }
         };
 
-    }, [itemName, itemId, socketRef.current,customBid]);
+    }, [itemName, itemId, socketRef.current,customBid,userId]);
 
     const sattaHandler = () => {
         // console.log(lastBidReceived, "this is the last bid received");
-        console.log(Number(customBid),"cutom bid");
+        // console.log(Number(customBid),"cutom bid");
         if (aucItem && socketRef.current) {
             let lastBid: number;
             if (lastBidReceived) {
@@ -86,6 +92,7 @@ export default function AuctionItem() {
             } else {
                 lastBid = aucItem.startingBid;
             }
+            // console.log(lastBid,"new last bid")
             const bid = Number(lastBid) + Number(aucItem.minBidInc);
             if (Number(customBid) && Number(customBid) > Number(aucItem.minBidInc)) {
                 socketRef.current.emit("bid:newbid", { bid: Number(customBid), itemId, userId, itemName });
@@ -96,9 +103,10 @@ export default function AuctionItem() {
                 console.log(bid,"normal bid");
             }
             // console.log(aucItem.minBidInc, bid);
-        } else {
-            console.log("galat");
-        }
+        } 
+        // else {
+        //     console.log("galat");
+        // }
         setCustomBid("");
     };
 
@@ -108,7 +116,7 @@ export default function AuctionItem() {
                 (joined && !loading && aucItem) &&
                 <section className='my-20 w-fit bg-[#f6f6f6] p-5 rounded-md shadow-lg grid grid-cols-2'>
                     <div>
-                        <img className='rounded-md' src="https://cdn.pixabay.com/photo/2023/06/07/12/51/insect-8047159_640.jpg" alt="auction item" />
+                        <img className='rounded-md' src={aucItem.img_url} alt="auction item" />
                         <h1 className='font-extrabold text-2xl mt-5 mb-3'>{aucItem.name}</h1>
                         <div className='grid grid-cols-2 gap-5 font-bold text-xl my-2'>
                             <div>Minimum Bid</div>
@@ -138,4 +146,5 @@ export default function AuctionItem() {
             }
         </div>
     );
+    
 }
