@@ -10,9 +10,10 @@ export default function AddAuctionContianer() {
         minBidInc: "",
         date: "",
         time: "",
+        end:"",
         description: "",
     })
-    const { name, startingBid, minBidInc, date, time,description } = inputValues;
+    const { name, startingBid, minBidInc, date, time, description,end } = inputValues;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setInputValues((prev) => ({
@@ -37,7 +38,7 @@ export default function AddAuctionContianer() {
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // console.log(inputValues, selectedDate, selectedTime);
-        if (name && selectedImage && startingBid && minBidInc && date && time && description) {
+        if (name && selectedImage && startingBid && minBidInc && date && time && description && end) {
             // const data = {
             //     ...inputValues
             // };
@@ -48,7 +49,8 @@ export default function AddAuctionContianer() {
             data.append("date", date);
             data.append("time", time);
             data.append("img", selectedImage);
-            data.append("description",description);
+            data.append("description", description);
+            data.append("end",end);
             console.log(data);
             await axios.post(`http://localhost:8085/auction/createauction`, data)
                 .then(resp => {
@@ -78,6 +80,11 @@ export default function AddAuctionContianer() {
                         value={name}
                         onChange={handleChange}
                         placeholder="Enter name" />
+                    <div className='w-full h-fit py-3 flex flex-col'>
+                        <p className='font-bold text-lg  mx-5'>Product Image</p>
+                        <label htmlFor="img" className='bg-green-500 w-full text-white font-bold text-lg px-4 py-2 mx-5 rounded-md'>Choose Image</label>
+                        <input className='hidden' onChange={handleImageChange} type="file" name="img" id="img" />
+                    </div>
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="description" className='font-bold text-lg'>Description</label>
@@ -109,8 +116,8 @@ export default function AddAuctionContianer() {
                         onChange={handleChange}
                         placeholder="Enter minimum Bid Increment" />
                 </div>
-                <div className='grid grid-cols-2'>
-                    <div className='grid grid-cols-2 gap-2'>
+                <div className=''>
+                    <div className='grid grid-cols-3 gap-2'>
                         <InputComponent id="date"
                             name="date"
                             type="date"
@@ -121,15 +128,17 @@ export default function AddAuctionContianer() {
                         <InputComponent id="time"
                             name="time"
                             type="time"
-                            label="Minimum time"
+                            label="Start time"
                             value={time}
                             onChange={handleChange}
                             placeholder="Enter time" />
-                    </div>
-                    <div className='w-full h-fit py-3 flex flex-col'>
-                        <p className='font-bold text-lg  mx-5'>Product Image</p>
-                        <label htmlFor="img" className='bg-green-500 w-full text-white font-bold text-lg px-4 py-2 mx-5 rounded-md'>Choose Image</label>
-                        <input className='hidden' onChange={handleImageChange} type="file" name="img" id="img" />
+                        <InputComponent id="end"
+                            name="end"
+                            type="time"
+                            label="End time"
+                            value={end}
+                            onChange={handleChange}
+                            placeholder="Enter time" />
                     </div>
                 </div>
                 <button className='bg-black my-5 w-fit mx-auto text-white font-bold text-lg px-4 py-3 rounded-md'>Schedule Auction</button>

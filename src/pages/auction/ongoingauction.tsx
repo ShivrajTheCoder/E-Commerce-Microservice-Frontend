@@ -11,6 +11,8 @@ interface AItem {
   date: string;
   time: string;
   description:string;
+  active:boolean;
+  end:string;
 }
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,7 +24,7 @@ export default function ongoingauction() {
       .then(resp => {
         if (resp.status === 200 && resp.data.result.length > 0) {
           setAucItems(resp.data.result)
-          console.log(resp.data.result);
+          // console.log(resp.data.result);
         }
         else {
           console.log("error");

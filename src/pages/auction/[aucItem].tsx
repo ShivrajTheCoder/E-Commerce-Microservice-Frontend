@@ -16,7 +16,7 @@ interface AucItemInterface {
     startingBid: number;
     minBidInc: number;
     lastBid: number;
-    img_url: string;
+    image_url: string;
     date: string;
     time: string;
     description: string;
@@ -118,7 +118,7 @@ export default function AuctionItem() {
                 (joined && !loading && aucItem) &&
                 <section className='my-20 w-fit bg-[#f6f6f6] p-5 rounded-md shadow-lg grid grid-cols-2'>
                     <div>
-                        <img className='rounded-md' src={aucItem.img_url} alt="auction item" />
+                        <img className='rounded-md' src={aucItem.image_url} alt="auction item" />
                     </div>
                     <div className='flex flex-col items-center w-full'>
                         <h1 className='font-extrabold text-3xl'>Current Auction</h1>

@@ -6,10 +6,12 @@ interface AItem {
     startingBid: number;
     minBidInc: number;
     lastBid: number;
-    img_url: string;
+    image_url: string;
     date: string;
     time: string;
+    end:string;
     description: string;
+    active:boolean;
 }
 
 interface ItemProp extends AItem {
@@ -19,7 +21,8 @@ export default function AuctionItemCard(props: ItemProp) {
 
     //need to update the date stuff
 
-    const { _id, name, startingBid, minBidInc, lastBid, img_url, date, time, description } = props;
+    const { _id, name, startingBid, minBidInc, image_url,end, date, time, description ,active} = props;
+    console.log(image_url,"this is the image")
     const parts = date.split('-');
     const areSameDate = (date1: Date, date2: Date) => {
         return (date1.getFullYear() === date2.getFullYear() &&
@@ -38,7 +41,7 @@ export default function AuctionItemCard(props: ItemProp) {
     };
     return (
         <div className='rounded-b-xl grid grid-cols-12 p-5 bg-[#f6f6f6] h-full'>
-            <img className='w-full h-full col-span-6 rounded-xl' src={img_url} alt={name} />
+            <img className='w-full h-full col-span-6 rounded-xl' src={image_url} alt={name} />
             <div className='p-5 col-span-6'>
                 <h2 className='font-bold text-3xl'>{name}</h2>
                 <p className='font-semibold text-lg my-2'>{description}</p>
@@ -54,6 +57,10 @@ export default function AuctionItemCard(props: ItemProp) {
                     <h2 className='font-bold text-xl'>Timings</h2>
                     <p className='ml-auto mr-5'>{time}</p>
                 </div>
+                <div className='flex font-semibold text-lg'>
+                    <h2 className='font-bold text-xl'>Ending Time</h2>
+                    <p className='ml-auto mr-5'>{end}</p>
+                </div>
                 {
                     !areSameDate(targetDate, currentDate) &&
                     <div className='flex font-semibold text-lg'>
@@ -61,8 +68,9 @@ export default function AuctionItemCard(props: ItemProp) {
                         <p className='ml-auto mr-5'>{date.toString()}</p>
                     </div>
                 }
+                
                 <div className='mt-5 w-full'>
-                    {(areSameDate(targetDate, currentDate)) && <Link className='bg-black my-20 w-full  text-white font-bold text-lg px-4 py-3 rounded-md' href={href} as={`/auction/${_id}`}>Join Auction</Link>}
+                    {((areSameDate(targetDate, currentDate)) && active)&& <Link className='bg-black my-20 w-full  text-white font-bold text-lg px-4 py-3 rounded-md' href={href} as={`/auction/${_id}`}>Join Auction</Link>}
                 </div>
             </div>
         </div>
