@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState<Boolean>(false);
     const user = useSelector((state: RootState) => state.user);
+    console.log(user,"this is the user");
     const { items } = useSelector((state: RootState) => state.cart);
     // console.log(items.length, "front the header")
     const isAdmin = user.isAdmin;
@@ -30,8 +31,8 @@ export default function Header() {
                     !isAdmin && <Link href={"/auction/ongoingauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Auction</Link>
                 }
                 {/* temporary link*/}
-                <Link href={"/admin/adauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Auction</Link>
-                <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Panel</Link>
+                {/* <Link href={"/admin/adauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Auction</Link> */}
+                {/* <Link href={"/admin/adminpanel"} className=' text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Admin Panel</Link> */}
                 <Link href={"/auction/ongoingauction"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>Ongoing Auction</Link>
                 <Link href={"/user/myorders"} className='mx-5 text-lg font-bold text-white  bg-[#A3A4A1] rounded-3xl px-5 py-1'>My Orders</Link>
             </div>
