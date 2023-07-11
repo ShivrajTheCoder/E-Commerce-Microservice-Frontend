@@ -20,6 +20,7 @@ export default function ProductContainer() {
     const [changes, setChanges] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
+    const [number, setNumber] = useState<Number>(8);
     const [products, setProducts] = useState<{
         _id: string;
         _v: number;
@@ -31,13 +32,26 @@ export default function ProductContainer() {
         image_url: string;
     }[]>([]);
     useEffect(() => {
+        const handleResize = () => {
+            const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
+            // console.log(isMobileDevice,"is a mobile");
+            if (isMobileDevice) {
+                setNumber(2);
+            }
+            else {
+                setNumber(4);
+            }
+        };
+
+        // Initial check on component mount
+        handleResize();
         const fetchProuducts = async () => {
             let params;
             if(!pageNumber){
-                 params = { pages: 1, limit: 8 }
+                 params = { pages: 1, limit: number }
             }
             else{
-                params={page:pageNumber,limit:8}
+                params={page:pageNumber,limit:number}
             }
             console.log(pageNumber,"thaplsflj")
             
@@ -64,7 +78,7 @@ export default function ProductContainer() {
 
         <section className='flex flex-col justify-center mt-10 items-center w-full'>
             {
-                (!loading && products) && <div className='grid grid-cols-4 gap-9 w-full'>
+                (!loading && products) && <div className='grid md:grid-cols-4 grid-cols-1 gap-9 w-full'>
 
                     {products.map((product) => (
                         <ProductCard setChanges={setChanges} key={product._id} product={product} />

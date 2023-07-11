@@ -36,8 +36,8 @@ export default function SearchBar() {
     }
   }, [param])
   return (
-    <div className='flex flex-col justify-center items-center'>
-      <input className='w-full bg-[#f6f6f6] rounded-xl mt-10 text-black px-32 py-5 ' type="text" onChange={(e) => { setParam(e.target.value) }} name="search-params" id="search-param" placeholder='What do you want today?' />
+    <div className='flex flex-col justify-center items-center mx-5'>
+      <input className='w-full bg-[#f6f6f6] rounded-xl mt-10 text-black px-10 md:px-32   md:py-5 py-2' type="text" onChange={(e) => { setParam(e.target.value) }} name="search-params" id="search-param" placeholder='What do you want today?' />
 
       {
         results &&

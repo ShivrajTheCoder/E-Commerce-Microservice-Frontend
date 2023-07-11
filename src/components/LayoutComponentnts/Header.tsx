@@ -18,7 +18,7 @@ export default function Header() {
     };
     return (
         <nav className='flex md:mx-10 mx-2 my-2 w-full'>
-            <Link className=' font-extrabold font-mono text-2xl' href="/home">Online.Shopping</Link>
+            <Link className=' md:font-extrabold font-bold font-mono md:text-2xl text-lg' href="/home">Online.Shopping</Link>
             <div className='md:mx-10 md:flex justify-center items-center hidden'>
                 {
                     isAdmin &&
@@ -46,13 +46,13 @@ export default function Header() {
                     !isLoggedIn &&
                     <Link href="/" className='mx-3 flex justify-center'>
                         <BsFillPersonFill size={30} className="text-[#03045e]" />
-                        <span className='text-xl font-semibold text-[#03045e]'>Account</span>
+                        <span className='text-xl hidden md:flex font-semibold text-[#03045e]'>Account</span>
                     </Link>
                 }
                 {isLoggedIn && <div className="relative">
                     <button onClick={toggleDropdown} className='mx-3 flex justify-center'>
                         <BsFillPersonFill size={30} className="text-[#03045e]" />
-                        <span className='text-xl font-semibold text-[#03045e]'>Account</span>
+                        <span className='text-xl hidden md:flex font-semibold text-[#03045e]'>Account</span>
                     </button>
                     {isDropdownOpen && (
                         <div className="absolute right-0 mt-2 md:w-40 bg-white rounded-md shadow-lg z-10">

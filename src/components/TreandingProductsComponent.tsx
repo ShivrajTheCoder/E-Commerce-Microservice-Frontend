@@ -15,11 +15,26 @@ interface IProduct {
 export default function TreandingProductsComponent() {
     const [treanding, setTreading] = useState<IProduct[]>();
     const [loading, setLoading] = useState(true);
+    const [number, setNumber] = useState<Number>(4);
     const [error, setError] = useState();
     useEffect(() => {
+        const handleResize = () => {
+            const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
+            // console.log(isMobileDevice,"is a mobile");
+            if (isMobileDevice) {
+                setNumber(2);
+            }
+            else {
+                setNumber(4);
+            }
+        };
+
+        // Initial check on component mount
+        handleResize();
         const fetchTreanding = async () => {
+            console.log(number,"this is the number");
             const params = {
-                number: 4
+                number
             }
             try {
                 const resp = await axios.get(`http://localhost:8080/products/treadingproducts`, { params });
@@ -37,7 +52,7 @@ export default function TreandingProductsComponent() {
     return (
         <div className='flex flex-col justify-center mt-10 items-center w-full'>
             {
-                (!loading && !error && treanding) && <section className='grid grid-cols-4 gap-9 w-full'>
+                (!loading && !error && treanding) && <section className='grid md:grid-cols-4 grid-cols-1 gap-9 w-full'>
                     {
                         treanding.map(product => (
 

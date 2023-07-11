@@ -93,7 +93,7 @@ export default function ProductCard(props: ProductCardProps) {
     };
     return (
         <div className='rounded-b-xl bg-[#f6f6f6]'>
-            <img className='h-96 w-full rounded-t-xl' src={product.image_url} alt={product.name} />
+            <img className='md:h-96 h-fit w-full rounded-t-xl' src={product.image_url} alt={product.name} />
             <div className='p-5'>
                 <div className='flex font-bold text-xl'>
                     <h2 className=''>{product.name}</h2>
