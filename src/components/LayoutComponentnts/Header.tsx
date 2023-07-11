@@ -58,6 +58,7 @@ export default function Header() {
                             {/* Add your dropdown links here */}
                             <Link href="/user/myorders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</Link>
                             <Link href="/user/myaucorders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Auction Orders</Link>
+                            <Link href="/user/accountdetails" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</Link>
                             
                         </div>
                     )}
