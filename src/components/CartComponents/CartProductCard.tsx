@@ -46,10 +46,10 @@ export default function CartProductCard({ item }: ProductProps) {
         dispatch(removeItem({ itemId: item._id }));
     }
     return (
-        <section className=''>
+        <section className='w-full'>
             {
-                <div className='grid grid-cols-5 px-5 py-3'>
-                <img src={item.image_url} className=' rounded-md col-span-1 ' alt="" />
+                <div className='grid md:grid-cols-5 md:px-5 px-3 py-3'>
+                <img src={item.image_url} className='w-full rounded-md md:col-span-1 ' alt="" />
                 <div className='flex flex-col px-5 py-3 col-span-3'>
                     <h1 className=' font-bold text-3xl'>{item.name}</h1>
                     <p className='text-lg my-5'>{item.description}</p>
@@ -68,7 +68,7 @@ export default function CartProductCard({ item }: ProductProps) {
                         <span className='px-4 font-extrabold'>{item.qty}</span>
                         <button className='px-4 py-2 rounded-md bg-slate-100 text-black font-extrabold' onClick={reduceQty}>-</button>
                     </div>
-                    <div className='mt-3'>
+                    <div className='mt-3 md:block hidden'>
                         <button className='bg-green-500 text-white px-4 py-2 font-bold rounded-md flex items-center'><span className='mx-2'> Free Delivery </span><TbTruckDelivery size={30} /> </button>
                     </div>
                     {/* <button>Remove Item</button> */}

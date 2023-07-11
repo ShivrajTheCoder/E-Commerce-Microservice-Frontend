@@ -45,16 +45,16 @@ export default function AuctionOrderCard({ order }: OrderProps) {
     return (
         <section className='m-5'>
             {
-                (item && rzOrder) && <main className='m-2 p-5 rounded-md '>
-                    <h1 className='py-2 text-3xl font-bold'>Order Id: OnS{order._id}</h1>
-                    <div className='flex text-lg my-5'>
+                (item && rzOrder) && <main className='m-2 md:p-5 rounded-md '>
+                    <h1 className='py-2 md:text-3xl md:font-bold font-semibold text-lg'>Order Id: OnS{order._id}</h1>
+                    <div className='flex md:flex-row flex-col text-lg my-5'>
                         <div>Ordered On {`${order.createdAt.toString()}`}</div>
-                        <div className='border-l-2 bg-blue-500 w-1 h-8 mx-3'></div>
+                        <div className='md:border-l-2 md:my-0 my-2 bg-blue-500 md:w-1 w-full h-1 md:h-8 mx-3'></div>
                         <div>Estimated Delivery {`Delivery date`}</div>
-                        <div className='border-l-2 bg-blue-500 w-1 h-8 mx-3'></div>
-                        <div className='font-bold'>₹ {order.price}</div>
+                        <div className='md:border-l-2 md:my-0 my-2 bg-blue-500 md:w-1 w-full h-1 md:h-8 mx-3'></div>
+                        <div className='font-bold'>Price ₹ {order.price}</div>
                     </div>
-                    <div className='grid grid-cols-3 gap-4'>
+                    <div className='grid md:grid-cols-3 grid-cols-1 gap-4'>
                         <img className='col-span-1 rounded-md' src={item.image_url} alt={item.name} />
                         <div className='col-span-2'>
                             <h2 className='font-bold text-3xl'>{item.name}</h2>

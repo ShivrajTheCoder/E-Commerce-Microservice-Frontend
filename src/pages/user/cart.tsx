@@ -78,9 +78,9 @@ export default function cart() {
     }
   }
   return (
-    <main className='grid grid-cols-12 py-10 px-5 w-full'>
+    <main className='grid md:grid-cols-12 py-10 px-5 w-full'>
       {
-        (cartItems.length > 0) && <section className=' col-span-9'>
+        (cartItems.length > 0) && <section className=' md:col-span-9'>
           {
             cartItems?.map(item => (
               <CartProductCard key={item._id} item={item} />
@@ -90,7 +90,7 @@ export default function cart() {
       }
       {
         (cartItems.length > 0) &&
-        <div className='rounded-lg col-span-3 h-fit w-full p-10 text-white  bg-[#A3A4A1] font-bold text-xl'>
+        <div className='rounded-lg md:col-span-3 h-fit w-full p-10 text-white  bg-[#A3A4A1] font-bold text-xl'>
           Cart summary
           <p className='mb-3'>{subTotal} <span>({cartItems.length})</span></p>
           <button onClick={handleProceedToBuy} className='bg-[#ffd60a] text-black px-3 py-2 rounded-md my-auto'>Proceed To Buy</button>
