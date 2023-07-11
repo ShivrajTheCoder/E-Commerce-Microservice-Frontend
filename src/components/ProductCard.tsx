@@ -111,7 +111,7 @@ export default function ProductCard(props: ProductCardProps) {
                     <p className='text-sm'>({product.ratingCount})</p>
                 </div>
 
-                <button className='font-bold mt-auto text-xl bg-black text-white hover:bg-white hover:text-black px-5 py-3 rounded-md' onClick={addToCartHandler}>Add to Cart</button>
+                <button className='font-bold w-full mt-auto text-xl bg-black text-white hover:bg-white hover:text-black px-5 py-3 rounded-md' onClick={addToCartHandler}>Add to Cart</button>
             </div>
             <ToastContainer />
         </div>
