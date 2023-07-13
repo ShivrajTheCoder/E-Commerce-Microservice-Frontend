@@ -22,7 +22,7 @@ export default function AuctionItemCard(props: ItemProp) {
     //need to update the date stuff
 
     const { _id, name, startingBid, minBidInc, image_url,end, date, time, description ,active} = props;
-    console.log(image_url,"this is the image")
+    // console.log(image_url,"this is the image")
     const parts = date.split('-');
     const areSameDate = (date1: Date, date2: Date) => {
         return (date1.getFullYear() === date2.getFullYear() &&

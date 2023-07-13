@@ -12,6 +12,7 @@ export default function myorders() {
     const [error, setError] = useState<any>();
     const user = useSelector((state: RootState) => state.user);
     const router = useRouter();
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         if (!user.isLoggedin) {
             router.push("/");
@@ -19,7 +20,7 @@ export default function myorders() {
         const fetchAllMyOrders = async () => {
             try {
                 if (user.userId) {
-                    const response = await axios.get(`http://localhost:8080/orders/getuserorders/${user.userId}`);
+                    const response = await axios.get(`${apiUrl}/orders/getuserorders/${user.userId}`);
                     console.log(response.data.orders,response.status);
                     setOrders(response.data.orders);
                 }

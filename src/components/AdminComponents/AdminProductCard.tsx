@@ -24,6 +24,7 @@ interface ProductCardProps {
 }
 export default function AdminProductCard(props: ProductCardProps) {
     const { product, setChanges } = props;
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     const [loading, setLoading] = useState<Boolean>(false);
     const [updateValues, setUpdateValues] = useState({
         name: product.name,
@@ -41,7 +42,7 @@ export default function AdminProductCard(props: ProductCardProps) {
     const [show, setShow] = useState(false);
     const deleteHandler = async () => {
         setLoading(true);
-        await axios.delete(`http://localhost:8080/products/product/${product._id}`)
+        await axios.delete(`${apiUrl}/products/product/${product._id}`)
             .then(response => {
                 console.log(response);
                 if (response.status === 200) {

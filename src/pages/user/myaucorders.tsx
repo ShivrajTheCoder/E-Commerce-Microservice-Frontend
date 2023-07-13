@@ -19,6 +19,7 @@ export default function myaucorders() {
     const [error, setError] = useState<any>();
     const user = useSelector((state: RootState) => state.user);
     const router = useRouter();
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         const checkLogin = () => {
             if (!user.isLoggedin && user.userId) {
@@ -27,7 +28,7 @@ export default function myaucorders() {
         }
         const fetchOrders = async () => {
             try {
-                const resp = await axios.get(`http://localhost:8080/orders/getuseraucorders/${user.userId}`)
+                const resp = await axios.get(`${apiUrl}/orders/getuseraucorders/${user.userId}`)
                 if (resp.status === 200) {
                     console.log(resp.data.orders);
                     setAucOrders(resp.data.orders);
@@ -37,7 +38,7 @@ export default function myaucorders() {
                 }
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
                 setError(error);
             }
         }

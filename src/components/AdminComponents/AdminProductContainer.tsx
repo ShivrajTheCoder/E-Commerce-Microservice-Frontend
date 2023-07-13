@@ -4,6 +4,7 @@ import AdminProductCard from './AdminProductCard';
 import LoadingComponent from '../LoadingComponent';
 
 export default function AdminProductContainer() {
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     const [changes, setChanges] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
@@ -19,7 +20,7 @@ export default function AdminProductContainer() {
     }[]>([]);
     useEffect(() => {
         const fetchProuducts = async () => {
-            await axios.get(`http://localhost:8080/products/getallproducts`)
+            await axios.get(`${apiUrl}/products/getallproducts`)
                 .then(resp => {
                     if (resp.status === 200) {
                         console.log(resp.data.data);

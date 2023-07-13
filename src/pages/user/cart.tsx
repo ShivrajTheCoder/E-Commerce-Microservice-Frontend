@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import * as actions from "../../store/reducers/cartActions";
 import { useSelector, useDispatch } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface IProduct {
   _id: string;
   name: string;
@@ -23,36 +25,36 @@ interface IOrder {
 export default function cart() {
   const router=useRouter();
   const [subTotal, setSubtotal] = useState<number>(0);
-  const [cartLocal, setCartLocal] = useState<IProduct[]>([]);
+  // const [cartLocal, setCartLocal] = useState<IProduct[]>([]);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const user = useSelector((state: RootState) => state.user);
   const dispatch=useDispatch();
-  console.log(cartItems, 'from the cart');
-
+  // console.log(cartItems, 'from the cart');
+  const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
   const clearCart=createAction(actions.CLEAR_CART);
   useEffect(() => {
     setSubtotal(0);
     cartItems.forEach(item => {
       setSubtotal((prev) => prev + (item.price * item.qty));
     });
-    const fetchFromLocal = () => {
-      let cartItemsLocal = localStorage.getItem("onlineShoppingCart");
-      if (cartItemsLocal) {
-        cartItemsLocal = JSON.parse(cartItemsLocal);
-        if (Array.isArray(cartItemsLocal))
-          setCartLocal([...cartItemsLocal]);
-      }
-      console.log(cartItems, "from local")
-    }
-    fetchFromLocal();
+    // const fetchFromLocal = () => {
+    //   let cartItemsLocal = localStorage.getItem("onlineShoppingCart");
+    //   if (cartItemsLocal) {
+    //     cartItemsLocal = JSON.parse(cartItemsLocal);
+    //     if (Array.isArray(cartItemsLocal))
+    //       setCartLocal([...cartItemsLocal]);
+    //   }
+    //   console.log(cartItems, "from local")
+    // }
+    // fetchFromLocal();
   }, [cartItems])
   const handleProceedToBuy = async () => {
-    console.log("I was clicked", user);
+    // console.log("I was clicked", user);
     if (cartItems.length < 1) {
       return;
     }
     if (!user.isLoggedin || !user.userId) {
-      console.log(true);
+      // console.log(true);
       router.push("/");
     }
     else {
@@ -63,17 +65,18 @@ export default function cart() {
         productIds.push({ _id, qty });
       })
       const orderData = { prod: productIds, userId };
-      console.log(orderData);
+      // console.log(orderData);
       try {
-        const resp = await axios.post(`http://localhost:8081/products/products/buy`, orderData)
-        console.log(resp.data);
+        const resp = await axios.post(`${apiUrl}/products/products/buy`, orderData)
+        // console.log(resp.data);
         if(resp.status===200){
           dispatch(clearCart());
-          router.push("/user/myorders");
+          router.push("/home");
         }
       }
       catch (err) {
-        console.log(err);
+        // console.log(err);
+        toast.error("Something went wrong!");
       }
     }
   }

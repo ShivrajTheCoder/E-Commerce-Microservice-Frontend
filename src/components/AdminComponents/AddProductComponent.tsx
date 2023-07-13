@@ -2,6 +2,8 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import InputComponent from '../InputComponent';
 import axios from "axios"
 import LoadingComponent from '../LoadingComponent';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function AddProductComponent() {
     const apiUrl = process.env.NEXT_PUBLIC_API_KEY;
     // console.log(apiUrl,"idladsjlfa");
@@ -39,7 +41,7 @@ export default function AddProductComponent() {
         // console.log("HIii");
         setLoading(true);
         const productData = new FormData();
-        console.log(selectedImage, productValues);
+        // console.log(selectedImage, productValues);
         if (name && price && description && selectedImage) {
             productData.append('img', selectedImage);
             productData.append("name", name);
@@ -49,33 +51,38 @@ export default function AddProductComponent() {
             await axios.post(`http://localhost:8081/products/addproduct`, productData)
                 .then(response => {
                     if (response.status === 201 || response.status === 200) {
-                        console.log(response, "sucess");
+                        // console.log(response, "sucess");
                         setProductValues({
                             name: "",
                             price: 500,
                             description: "",
                         });
+                        setSelectedImage(null);
+                        toast.success("Product added!");
                     }
                     else {
-                        console.log(response, "failed");
+                        // console.log(response, "failed");
+                        toast.error("Something went wrong!");
                     }
                 })
                 .catch(error => {
-                    console.log("error");
+                    // console.log("error");
                     if (error.response) {
+                        toast.error(error.response);
                         // Request was made and server responded with a status code
                         console.error('Server Error:', error.response.data);
                     } else if (error.request) {
                         // Request was made but no response was received
-                        console.error('Request Error:', error.request);
+                        toast.error(error.response);
                     } else {
                         // Something else happened while setting up the request
-                        console.error('Error:', error.message);
+                        toast.error(error.response);
                     }
                 })
         }
         else {
-            console.log("something went wrong!");
+            // console.log("something went wrong!");
+            toast.error("Something went wrong!");
         }
         setLoading(false);
     }
@@ -126,6 +133,7 @@ export default function AddProductComponent() {
                         </div>
                         <button className='bg-black my-5 w-fit mx-auto text-white font-bold text-lg px-4 py-3 rounded-md' type="submit">Add Product</button>
                     </form>
+                    <ToastContainer/>
                 </div>
             }
             {

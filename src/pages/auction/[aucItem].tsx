@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import io from 'socket.io-client';
 
 interface NewBid {
@@ -33,7 +35,7 @@ export default function AuctionItem() {
     const [lastBidReceived, setLastBid] = useState<number | undefined>();
     const [customBid, setCustomBid] = useState<string | undefined>("");
     const socketRef = useRef<any>(null);
-
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
 
         const checkLogin = () => {
@@ -60,15 +62,16 @@ export default function AuctionItem() {
 
         const getItemDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8085/auction/getitem/${itemId}`);
+                const response = await axios.get(`${apiUrl}/auction/getitem/${itemId}`);
                 if (response.status === 200) {
                     console.log(response.data.result[0]);
                     setAucItem(response.data.result[0]);
                 } else {
-                    console.log("error");
+                    // console.log("error");
+                    toast.error("Something went wrong!");
                 }
             } catch (error) {
-                console.log(error);
+                toast.error("Something went wrong!");
             }
             setLoading(false);
         };
@@ -98,11 +101,11 @@ export default function AuctionItem() {
             const bid = Number(lastBid) + Number(aucItem.minBidInc);
             if (Number(customBid) && Number(customBid) > Number(aucItem.minBidInc)) {
                 socketRef.current.emit("bid:newbid", { bid: Number(customBid), itemId, userId, itemName });
-                console.log(Number(customBid), "cutom bid");
+                // console.log(Number(customBid), "cutom bid");
             }
             else {
                 socketRef.current.emit("bid:newbid", { bid, itemId, userId, itemName });
-                console.log(bid, "normal bid");
+                // console.log(bid, "normal bid");
             }
             // console.log(aucItem.minBidInc, bid);
         }
@@ -149,6 +152,7 @@ export default function AuctionItem() {
                     The item is not available
                 </div>
             }
+            <ToastContainer/>
         </div>
     );
 

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RazorpayButton from '@/components/PaymentComponent/RazorpayButton';
 import { useRouter } from 'next/router';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface IProduct {
   _id: string;
   name: string;
@@ -31,17 +32,18 @@ export default function OrderScreen() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [rzOrder, rzSetOrder] = useState<any>();
   const [order, setOrder] = useState<IOrder>();
-
+  const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/orders/getoder/${orderId}`);
+        const res = await axios.get(`${apiUrl}/orders/getoder/${orderId}`);
         setOrder(res.data.order);
         setProducts(JSON.parse(res.data.order.products));
         rzSetOrder(JSON.parse(res.data.order.razorpayOrder));
         setLoading(false);
-      } catch (error) {
-        console.log(error);
+      } catch (error:any) {
+        // console.log(error);
+        toast.error(error);
       }
     };
 
@@ -89,6 +91,7 @@ export default function OrderScreen() {
               <RazorpayButton totalPrice={order.totalPrice} order_id={rzOrder.id} or_id={order._id} />
             )}
           </div>
+          <ToastContainer/>
         </div>
       )}
     </>

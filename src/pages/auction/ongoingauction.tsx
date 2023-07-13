@@ -7,7 +7,7 @@ interface AItem {
   startingBid: number;
   minBidInc: number;
   lastBid: number;
-  img_url: string;
+  image_url: string;
   date: string;
   time: string;
   description:string;
@@ -19,20 +19,21 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ongoingauction() {
   const [aucItems, setAucItems] = useState<AItem[]>();
   const [loading, setLoading] = useState<Boolean>(true);
+  const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
   useEffect(() => {
-    axios.get(`http://localhost:8085/auction/getavailauction`)
+    axios.get(`${apiUrl}/auction/getavailauction`)
       .then(resp => {
         if (resp.status === 200 && resp.data.result.length > 0) {
           setAucItems(resp.data.result)
           // console.log(resp.data.result);
         }
         else {
-          console.log("error");
+          // console.log("error");
           toast.error("Something went wrong");
         }
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         toast.error("Something went wrong");
       })
       .finally(() => {

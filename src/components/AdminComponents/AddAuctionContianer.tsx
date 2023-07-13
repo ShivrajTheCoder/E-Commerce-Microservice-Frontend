@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingComponent from '../LoadingComponent';
 export default function AddAuctionContianer() {
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     const [loading, setLoading] = useState<Boolean>(false);
     const [inputValues, setInputValues] = useState({
         name: "",
@@ -54,10 +55,10 @@ export default function AddAuctionContianer() {
             data.append("img", selectedImage);
             data.append("description", description);
             data.append("end", end);
-            console.log(data);
+            // console.log(data);
             await axios.post(`http://localhost:8085/auction/createauction`, data)
                 .then(resp => {
-                    console.log(resp);
+                    // console.log(resp);
                     if (resp.status === 201) {
                         toast.success("Created");
                         setInputValues({
@@ -75,7 +76,7 @@ export default function AddAuctionContianer() {
                     }
                 })
                 .catch(error => {
-                    console.log(error);
+                    // console.log(error);
                     toast.error("Something went wrong!");
                 })
         }

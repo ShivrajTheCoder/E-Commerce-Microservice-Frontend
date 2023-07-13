@@ -7,6 +7,8 @@ import { createAction } from "@reduxjs/toolkit";
 import * as actions from "../store/reducers/userActions";
 import { useRouter } from "next/router";
 import { RootState } from "@/store/reducers";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface LoginPayload{
   userId:string;
   token:string;
@@ -17,6 +19,7 @@ export default function Home() {
   const dispatch=useDispatch();
   const user=useSelector((state:RootState)=>state.user);
   // console.log(user,"from the header");
+  const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
   const loggedInUser=createAction<LoginPayload>(actions.LOGIN_SUCCESS);
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -35,20 +38,22 @@ export default function Home() {
     console.log(inputValues);
     if(email && password){
       // password validation to be added
-      await axios.post(`http://localhost:8080/auth/signin`,{email,password})
+      await axios.post(`${apiUrl}/auth/signin`,{email,password})
         .then(resp=>{
           if(resp.status===200){
-            console.log("Logged in",resp.data)
+            // console.log("Logged in",resp.data)
             const {userId,token,isAdmin}=resp.data;
             dispatch(loggedInUser({userId,token,isAdmin}));
             router.push("/home");
           }
           else{
-            console.log("Something went wrong!");
+            // console.log("Something went wrong!");
+            toast.error("Something went wrong!");
           }
         })
         .catch(error=>{
-          console.log(error);
+          // console.log(error);
+          toast.error(error);
         })
     }
   }
@@ -79,6 +84,7 @@ export default function Home() {
         <div className="my-2 font-semibold text-md">Not a user? <Link className="text-blue-500" href={"/home"}>Signup</Link></div>
         </form>
       </section>
+      <ToastContainer/>
     </main>
   )
 }

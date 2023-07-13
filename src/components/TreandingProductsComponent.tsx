@@ -18,6 +18,7 @@ export default function TreandingProductsComponent() {
     const [loading, setLoading] = useState(true);
     const [number, setNumber] = useState<Number>(4);
     const [error, setError] = useState<any>();
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         const handleResize = () => {
             const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
@@ -39,7 +40,7 @@ export default function TreandingProductsComponent() {
                 number
             }
             try {
-                const resp = await axios.get(`http://localhost:8080/products/treadingproducts`, { params });
+                const resp = await axios.get(`${apiUrl}/products/treadingproducts`, { params });
                 if (resp.status === 200) {
                     setTreading(resp.data.treanding)
                 }

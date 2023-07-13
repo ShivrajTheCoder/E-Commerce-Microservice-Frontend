@@ -11,7 +11,7 @@ export default function Header() {
   const { items } = useSelector((state: RootState) => state.cart);
   const isAdmin = user.isAdmin;
   const isLoggedIn = user.isLoggedin;
-
+  
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface IAccount {
     address: string;
     email: string;
@@ -11,21 +13,13 @@ interface IAccount {
     phoneNumber: string;
     _id: string;
 }
-// address: "Bangali Tola, Dehradun"
-// email: "thapliyal@gmail.com"
-// firstName: "Suraj"
-// isAdmin: false
-// lastName: "Thapliyal"
-// password: "$2b$10$LS3UzwnbQQ91.y21AEdwXe6bTX.qxGLcNFaNNx0YWMt0pwTiFwXHy"
-// phoneNumber: "9548743479"
-// __v: 0
-// _id: "64a955667789411068a70ba1"
 export default function accountdetails() {
     const [isLoading, setIsLoading] = useState<Boolean>(true);
     const [account, setAccount] = useState<IAccount>();
     const [error, setError] = useState<any>();
     const user = useSelector((state: RootState) => state.user);
     const router = useRouter();
+    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         const checkLogin = () => {
             if (!user.isLoggedin && user.userId) {
@@ -34,17 +28,19 @@ export default function accountdetails() {
         }
         const fetchAccount = async () => {
             try {
-                const resp = await axios.get(`http://localhost:8080/auth/accountdetails/${user.userId}`);
+                const resp = await axios.get(`${apiUrl}/auth/accountdetails/${user.userId}`);
                 if (resp.status === 200) {
                     setAccount(resp.data.user);
-                    console.log(resp.data.user, "This is the response");
+                    // console.log(resp.data.user, "This is the response");
                 }
                 else {
-                    setError({ message: "Something went wrong!" });
+                    setError( "Something went wrong!" );
+                    toast.error("Something went wrong!");
                 }
             }
             catch (error) {
                 setError(error);
+                toast.error("Something went wrong!");
             }
         }
         checkLogin();
@@ -78,6 +74,7 @@ export default function accountdetails() {
                     </div>
                 </section>
             }
+            <ToastContainer/>
         </article>
     )
 }
