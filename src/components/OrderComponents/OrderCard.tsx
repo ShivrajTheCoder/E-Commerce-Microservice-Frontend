@@ -9,7 +9,7 @@ interface IOrder {
   userId: string;
   _id: string;
   createdAt: Date;
-  razorpayOrder:string;
+  razorpayOrder: string;
 }
 interface OrderProps {
   order: IOrder;
@@ -30,7 +30,7 @@ export default function OrderCard({ order }: OrderProps) {
   // const [rzOrder, rzSetOrder] = useState<any>();
   // console.log(order,"recieved order")
   useEffect(() => {
-  
+
     setProducts(JSON.parse(order.products));
     // console.log(products);
     // rzSetOrder(JSON.parse(order.razorpayOrder));
@@ -65,13 +65,11 @@ export default function OrderCard({ order }: OrderProps) {
         ))}
       </section>
       <hr />
-      <div>
-        <h1 className='font-bold text-xl'>Payment Status <span className='font-semibold text-lg'>{order.payment ? "Payed" : "Not Payed"}</span></h1>
-        {/* {
-          (!order.payment && rzOrder) && 
-          <RazorpayButton key={order._id} totalPrice={order.totalPrice} order_id={rzOrder.id} or_id={order._id}/>
-        } */}
-        <Link href={`/user/${order._id}`} className="py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-5">View Details</Link >
+      <div className='h-fit'>
+        <h1 className='font-bold text-xl'>Payment Status <span className='font-semibold text-lg mb-5'>{order.payment ? "Payed" : "Not Payed"}</span></h1>
+        <div className='py-4'>
+          <Link href={`/user/${order._id}`} className="py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md">View Details</Link >
+        </div>
       </div>
     </div>
   );

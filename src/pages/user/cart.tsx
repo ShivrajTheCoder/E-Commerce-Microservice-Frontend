@@ -71,7 +71,7 @@ export default function cart() {
         // console.log(resp.data);
         if(resp.status===200){
           dispatch(clearCart());
-          router.push("/home");
+          router.push("/myorders");
         }
       }
       catch (err) {
