@@ -21,6 +21,7 @@ export default function ongoingauction() {
   const [loading, setLoading] = useState<Boolean>(true);
   const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
   useEffect(() => {
+    // console.log("i ran")
     axios.get(`${apiUrl}/auction/getavailauction`)
       .then(resp => {
         if (resp.status === 200 && resp.data.result.length > 0) {
@@ -29,7 +30,7 @@ export default function ongoingauction() {
         }
         else {
           // console.log("error");
-          toast.error("Something went wrong");
+          toast.error("No Auction is live");
         }
       })
       .catch(error => {

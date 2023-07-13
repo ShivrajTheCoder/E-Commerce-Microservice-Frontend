@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import RazorpayButton from '../PaymentComponent/RazorpayButton';
 import Link from 'next/link';
+
 interface IOrder {
   payment: boolean;
   products: string;
@@ -11,9 +11,11 @@ interface IOrder {
   createdAt: Date;
   razorpayOrder: string;
 }
+
 interface OrderProps {
   order: IOrder;
 }
+
 interface IProduct {
   _id: string;
   name: string;
@@ -23,18 +25,13 @@ interface IProduct {
   ratingCount: number;
   image_url: string;
   qty: number;
-
 }
+
 export default function OrderCard({ order }: OrderProps) {
   const [products, setProducts] = useState<IProduct[]>([]);
-  // const [rzOrder, rzSetOrder] = useState<any>();
-  // console.log(order,"recieved order")
-  useEffect(() => {
 
+  useEffect(() => {
     setProducts(JSON.parse(order.products));
-    // console.log(products);
-    // rzSetOrder(JSON.parse(order.razorpayOrder));
-    // console.log(rzOrder,"razorpayorder");
   }, [order]);
 
   return (
@@ -71,14 +68,15 @@ export default function OrderCard({ order }: OrderProps) {
               <p className='font-semibold text-gray-400'>Qty: {prod.qty}</p>
             </div>
           </div>
-
         ))}
       </section>
       <hr />
       <div className='h-fit'>
         <h1 className='font-bold text-xl'>Payment Status <span className='font-semibold text-lg mb-5'>{order.payment ? "Payed" : "Not Payed"}</span></h1>
         <div className='py-4'>
-          <Link href={`/user/${order._id}`} className="py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md">View Details</Link >
+          <Link className="py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md" href="/user/[order]" as={`/user/${order._id}`} passHref>
+            View Details
+          </Link>
         </div>
       </div>
     </div>

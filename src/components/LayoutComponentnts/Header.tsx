@@ -16,6 +16,10 @@ export default function Header() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
   return (
     <nav className='flex items-center justify-between md:mx-10 mx-2 my-2 '>
       <Link href='/home' className='md:font-extrabold font-bold font-mono md:text-2xl text-lg'>
@@ -68,13 +72,13 @@ export default function Header() {
             {isDropdownOpen && (
               <div className='absolute right-0 mt-2 md:w-40 bg-white rounded-md shadow-lg z-10'>
                 {/* Add your dropdown links here */}
-                <Link href='/user/myorders' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                <Link href='/user/myorders' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100' onClick={closeDropdown}>
                   My Orders
                 </Link>
-                <Link href='/user/myaucorders' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                <Link href='/user/auction/myaucorders' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100' onClick={closeDropdown}>
                   Auction Orders
                 </Link>
-                <Link href='/user/accountdetails' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                <Link href='/user/accountdetails' className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100' onClick={closeDropdown}>
                   My Account
                 </Link>
               </div>

@@ -64,9 +64,14 @@ export default function AuctionOrderCard({ order }: OrderProps) {
                                 <h1 className="font-bold text-xl">
                                     Payment Status <span className="font-semibold text-lg">{order.payment ? 'Paid' : 'Not Paid'}</span>
                                 </h1>
-                                {!order.payment && rzOrder && (
+                                <div className='py-4'>
+                                    <Link className="py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md" href="/user/auction/[auction]" as={`/user/auction/${order._id}`} passHref>
+                                        View Details
+                                    </Link>
+                                </div>
+                                {/* {!order.payment && rzOrder && (
                                     <RazorpayButton totalPrice={order.price} order_id={rzOrder.id} or_id={order._id} />
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>
