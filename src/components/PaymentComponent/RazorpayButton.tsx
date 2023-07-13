@@ -1,12 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect ,useState} from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/reducers';
+interface IAccount {
+  address: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  _id: string;
+}
+export 
 const RazorpayButton = ({ totalPrice, order_id, or_id }: any): JSX.Element => {
   const router = useRouter();
+  const rzKey=process.env.NEXT_PUBLIC_RAZORPAY_KEY;
+  const [account, setAccount] = useState<IAccount>();
   const apiUrl = process.env.NEXT_PUBLIC_API_KEY;
+  const user = useSelector((state: RootState) => state.user);
   useEffect(() => {
+    const checkLogin = () => {
+      if (!user.isLoggedin && user.userId) {
+          router.push("/");
+      }
+  }
+  const fetchAccount = async () => {
+      try {
+          const resp = await axios.get(`${apiUrl}/auth/accountdetails/${user.userId}`);
+          if (resp.status === 200) {
+              setAccount(resp.data.user);
+              // console.log(resp.data.user, "This is the response");
+          }
+          else {
+              // setError( "Something went wrong!" );
+              toast.error("Something went wrong!");
+          }
+      }
+      catch (error) {
+          // setError(error);
+          toast.error("Something went wrong!");
+      }
+  }
     const loadRazorpay = async (): Promise<void> => {
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -15,7 +51,7 @@ const RazorpayButton = ({ totalPrice, order_id, or_id }: any): JSX.Element => {
 
       script.onload = () => {
         const options = {
-          key: 'rzp_test_sFSldafHF33EGU', // Enter the Key ID generated from the Dashboard
+          key: rzKey, // Enter the Key ID generated from the Dashboard
           amount: totalPrice * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
           currency: 'INR',
           name: 'Online-Shopping', // Your business name
@@ -43,9 +79,9 @@ const RazorpayButton = ({ totalPrice, order_id, or_id }: any): JSX.Element => {
             }
           },
           prefill: {
-            name: 'Gaurav Kumar', // Your customer's name
-            email: 'gaurav.kumar@example.com',
-            contact: '9548743479', // Provide the customer's phone number for better conversion rates
+            name: account?.firstName, // Your customer's name
+            email: account?.email,
+            contact: account?.phoneNumber, // Provide the customer's phone number for better conversion rates
           },
           notes: {
             address: 'Razorpay Corporate Office',
