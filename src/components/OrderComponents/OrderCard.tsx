@@ -27,14 +27,14 @@ interface IProduct {
 }
 export default function OrderCard({ order }: OrderProps) {
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [rzOrder, rzSetOrder] = useState<any>();
+  // const [rzOrder, rzSetOrder] = useState<any>();
   // console.log(order,"recieved order")
   useEffect(() => {
   
     setProducts(JSON.parse(order.products));
     // console.log(products);
-    rzSetOrder(JSON.parse(order.razorpayOrder));
-    console.log(rzOrder,"razorpayorder");
+    // rzSetOrder(JSON.parse(order.razorpayOrder));
+    // console.log(rzOrder,"razorpayorder");
   }, [order]);
 
   return (

@@ -33,7 +33,7 @@ export default function AuctionOrderCard({ order }: OrderProps) {
     const [item, setItem] = useState<IProduct>();
     const [rzOrder, rzSetOrder] = useState<any>();
     useEffect(() => {
-        console.log("heere is your data")
+        // console.log("heere is your data")
         if (order.item[0]) {// remove this condition
             setItem(JSON.parse(order.item[0]));
 

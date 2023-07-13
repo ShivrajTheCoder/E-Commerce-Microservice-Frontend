@@ -29,7 +29,8 @@ export default function Footer() {
         </div>
         <div className='text-white font-bold my-auto'>Developed By- Shivraj Thapliyal</div>
       </footer>
-      <footer className='w-full bg-black text-white'>
+      {/* footer for mobile */}
+      <footer className='w-full md:hidden bg-black text-white'>
         <section className='grid grid-cols-2 gap-2'>
           <div className='px-10 border-r-2 my-5'>
             <h3 className='font-bold text-2xl'>Social</h3>

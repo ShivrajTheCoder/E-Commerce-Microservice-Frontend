@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import ProductCard from './ProductCard';
+import LoadingComponent from './LoadingComponent';
 interface IProduct {
     _id: string;
     _v: number;
@@ -16,7 +17,7 @@ export default function TreandingProductsComponent() {
     const [treanding, setTreading] = useState<IProduct[]>();
     const [loading, setLoading] = useState(true);
     const [number, setNumber] = useState<Number>(4);
-    const [error, setError] = useState();
+    const [error, setError] = useState<any>();
     useEffect(() => {
         const handleResize = () => {
             const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
@@ -32,7 +33,8 @@ export default function TreandingProductsComponent() {
         // Initial check on component mount
         handleResize();
         const fetchTreanding = async () => {
-            console.log(number,"this is the number");
+            setLoading(true);
+            // console.log(number,"this is the number");
             const params = {
                 number
             }
@@ -43,24 +45,28 @@ export default function TreandingProductsComponent() {
                 }
             }
             catch (error) {
-                console.log(error);
+                // console.log(error);
+                setError(error);
             }
         }
         fetchTreanding();
         setLoading(false);
     }, [])
     return (
-        <div className='flex flex-col justify-center mt-10 items-center w-full'>
-            {
-                (!loading && !error && treanding) && <section className='grid md:grid-cols-4 grid-cols-1 gap-9 w-full'>
-                    {
-                        treanding.map(product => (
+        <>
+            {!loading &&<div className='flex flex-col justify-center mt-10 items-center w-full'>
+                {
+                    (!loading && !error && treanding) && <section className='grid md:grid-cols-4 grid-cols-1 gap-9 w-full'>
+                        {
+                            treanding.map(product => (
 
-                            <ProductCard setChanges={() => { }} key={product._id} product={product} />
-                        ))
-                    }
-                </section>
-            }
-        </div>
+                                <ProductCard setChanges={() => { }} key={product._id} product={product} />
+                            ))
+                        }
+                    </section>
+                }
+            </div>}
+            {loading && <LoadingComponent/>}
+        </>
     )
 }

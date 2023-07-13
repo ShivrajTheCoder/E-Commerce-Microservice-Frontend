@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import AdminProductCard from './AdminProductCard';
+import LoadingComponent from '../LoadingComponent';
 
 export default function AdminProductContainer() {
     const [changes, setChanges] = useState(false);
@@ -37,16 +38,18 @@ export default function AdminProductContainer() {
         fetchProuducts();
     }, [changes])
     return (
+        <>
+            {!loading &&<section className='flex flex-col justify-center mt-10 items-center w-full'>
+                {
+                    (!loading && products) && <div className='grid grid-cols-4 gap-9 w-full'>
 
-        <section className='flex flex-col justify-center mt-10 items-center w-full'>
-            {
-                (!loading && products) && <div  className='grid grid-cols-4 gap-9 w-full'>
-
-                    {products.map((product) => (
-                        <AdminProductCard setChanges={setChanges} key={product._id} product={product} />
-                    ))}
-                </div>
-            }
-        </section>
+                        {products.map((product) => (
+                            <AdminProductCard setChanges={setChanges} key={product._id} product={product} />
+                        ))}
+                    </div>
+                }
+            </section>}
+            {loading && <LoadingComponent/>}
+        </>
     )
 }
