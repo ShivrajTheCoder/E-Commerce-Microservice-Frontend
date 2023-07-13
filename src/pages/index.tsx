@@ -81,7 +81,7 @@ export default function Home() {
             onChange={handleChange}
             placeholder="Enter Password" />
           <button className='font-bold md:w-fit w-full mt-10 text-xl bg-black text-white hover:bg-white hover:text-black px-5 py-3 rounded-md'>Sign In</button>
-        <div className="my-2 font-semibold text-md">Not a user? <Link className="text-blue-500" href={"/home"}>Signup</Link></div>
+        <div className="my-2 font-semibold text-md">Not a user? <Link className="text-blue-500" href={"/user/signup"}>Signup</Link></div>
         </form>
       </section>
       <ToastContainer/>
