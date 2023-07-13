@@ -38,30 +38,40 @@ export default function OrderCard({ order }: OrderProps) {
   }, [order]);
 
   return (
-    <div className='p-5 bg-white'>
-      <h1 className='py-2 text-3xl font-bold'>Order Id: OnS{order._id}</h1>
-      <div className='flex text-lg my-5'>
+    <div className='md:p-5 bg-white'>
+      <h1 className='py-2 text-3xl font-bold md:block hidden'>Order Id: OnS{order._id}</h1>
+      <div className='flex md:flex-row flex-col text-lg my-5'>
         <div>Ordered On {`${order.createdAt.toString()}`}</div>
-        <div className='border-l-2 bg-blue-500 w-1 h-8 mx-3'></div>
+        <div className='md:border-l-2 md:my-0 my-2 bg-blue-500 md:w-1 w-full h-1 md:h-8 mx-3'></div>
         <div>Estimated Delivery {`Delivery date`}</div>
-        <div className='border-l-2 bg-blue-500 w-1 h-8 mx-3'></div>
-        <div className='font-bold'>₹ {order.totalPrice}</div>
+        <div className='md:border-l-2 md:my-0 my-2 bg-blue-500 md:w-1 w-full h-1 md:h-8 mx-3'></div>
+        <div className='font-bold'>Price ₹ {order.totalPrice}</div>
       </div>
       <hr />
-      <section className='grid grid-cols-2 gap-2'>
+      <section className='grid md:grid-cols-2 gap-2 w-full'>
         {products?.map((prod) => (
-          <div key={prod._id} className='grid grid-cols-10 my-5 bg-gray-200 p-4 rounded-md'>
-            <img className='cols-span-4 rounded-md' src={prod.image_url} alt={prod.name} />
-            <div className='flex flex-col mx-5 col-span-2'>
+          <div key={prod._id} className='grid md:grid-cols-10 grid-cols-1 gap-4 my-5 bg-gray-200 p-4 rounded-md'>
+            <img className='md:col-span-4 col-span-1 rounded-md' src={prod.image_url} alt={prod.name} />
+            <div className='md:col-span-3 col-span-1 flex flex-col justify-center'>
               <h1 className='font-bold text-2xl'>{prod.name}</h1>
-
+              <div className='md:hidden'>
+                <h4 className='font-bold text-xl'>Price: ₹ {prod.price}</h4>
+                <p className='font-semibold text-gray-400'>Qty: {prod.qty}</p>
+              </div>
             </div>
-            <div className='col-span-5 font-semibold text-lg'><p>{prod.description}</p></div>
-            <div className='ml-auto col-span-2'>
+            <div className='md:col-span-3 md:hidden col-span-1 font-semibold text-lg'>
+              <p>{prod.description.substring(0, 100)}...</p>
+              <div className='hidden md:block'>
+                <h4 className='font-bold text-xl'>Price: ₹ {prod.price}</h4>
+                <p className='font-semibold text-gray-400'>Qty: {prod.qty}</p>
+              </div>
+            </div>
+            <div className='md:col-span-2 hidden  col-span-1 md:flex flex-col justify-center items-end'>
               <h4 className='font-bold text-xl'>Price: ₹ {prod.price}</h4>
               <p className='font-semibold text-gray-400'>Qty: {prod.qty}</p>
             </div>
           </div>
+
         ))}
       </section>
       <hr />
