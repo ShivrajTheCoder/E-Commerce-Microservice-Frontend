@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-
-const RazorpayButton = ({ totalPrice, order_id,or_id }: any): JSX.Element => {
-  const router=useRouter();
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const RazorpayButton = ({ totalPrice, order_id, or_id }: any): JSX.Element => {
+  const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_KEY;
   useEffect(() => {
     const loadRazorpay = async (): Promise<void> => {
       const script = document.createElement('script');
@@ -20,23 +22,24 @@ const RazorpayButton = ({ totalPrice, order_id,or_id }: any): JSX.Element => {
           description: 'Test Transaction',
           image: 'https://static.vecteezy.com/system/resources/thumbnails/011/401/535/small/online-shopping-trolley-click-and-collect-order-logo-design-template-vector.jpg',
           order_id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-          handler:async function (response: any) {
+          handler: async function (response: any) {
             // alert(response.razorpay_payment_id);
             // alert(response.razorpay_order_id);
             // alert(response.razorpay_signature);
-            const data={
-              paymentId:response.razorpay_payment_id,
-              rzOrderId:response.razorpay_order_id,
-              rzSignature:response.razorpay_signature,
+            const data = {
+              paymentId: response.razorpay_payment_id,
+              rzOrderId: response.razorpay_order_id,
+              rzSignature: response.razorpay_signature,
             }
-            try{  
-              const res=await axios.post(`http://localhost:8080/orders/successpayment/${or_id}`,data)
-              if(res.status===200){
+            try {
+              const res = await axios.post(`${apiUrl}/orders/successpayment/${or_id}`, data)
+              if (res.status === 200) {
                 router.push("/user/myorders");
               }
             }
-            catch(error){
-              console.log(error);
+            catch (error) {
+              // console.log(error);
+              toast.error("Payment Failed");
             }
           },
           prefill: {
@@ -77,7 +80,9 @@ const RazorpayButton = ({ totalPrice, order_id,or_id }: any): JSX.Element => {
   }, []);
 
 
-  return <button id="rzp-button1" className='py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-3'>Razorpay</button>;
+  return <> <button id="rzp-button1" className='py-2 px-3 bg-green-500 text-white font-bold text-lg rounded-md my-3'>Razorpay</button>
+  <ToastContainer/>
+  </>;
 };
 
 export default RazorpayButton;
