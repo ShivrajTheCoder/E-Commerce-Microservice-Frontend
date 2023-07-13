@@ -1,3 +1,4 @@
+import ErrorComponent from '@/components/ErrorComponent';
 import OrderCard from '@/components/OrderComponents/OrderCard';
 import { RootState } from '@/store/reducers';
 import axios from 'axios';
@@ -9,10 +10,10 @@ import { useSelector } from 'react-redux';
 export default function myorders() {
     const [orders, setOrders] = useState<any>();
     const [isLoading, setIsLoading] = useState<Boolean>(true);
-    const [error, setError] = useState<any>();
+    const [error, setError] = useState<string>("");
     const user = useSelector((state: RootState) => state.user);
     const router = useRouter();
-    const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
+    const apiUrl = process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         if (!user.isLoggedin) {
             router.push("/");
@@ -21,28 +22,34 @@ export default function myorders() {
             try {
                 if (user.userId) {
                     const response = await axios.get(`${apiUrl}/orders/getuserorders/${user.userId}`);
-                    console.log(response.data.orders,response.status);
+                    console.log(response.data.orders, response.status);
                     setOrders(response.data.orders);
                 }
 
             }
             catch (error) {
-                setError(error);
+                setError("Nothing Ordered Yet!");
             }
             setIsLoading(false);
         }
         fetchAllMyOrders();
     }, [user])
     return (
-        <main>
+        <main >
             {
                 (!isLoading && orders) && <section className='m-10'>
                     {
-                        orders.map((order:any)=>(
-                            <OrderCard key={order._id} order={order}/>
+                        orders.map((order: any) => (
+                            <OrderCard key={order._id} order={order} />
                         ))
                     }
                 </section>
+            }
+            {
+                (!isLoading && error) && 
+                <div className='mx-10 my-10'>
+                <ErrorComponent message={error} />
+                </div>
             }
         </main>
     )

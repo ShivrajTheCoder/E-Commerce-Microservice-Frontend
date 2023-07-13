@@ -39,9 +39,6 @@ export default function Header() {
         {!isAdmin && (
           <>
             <Link href='/auction/ongoingauction' className='text-lg font-bold text-white bg-[#A3A4A1] rounded-3xl px-5 py-1'>
-              Auction
-            </Link>
-            <Link href='/auction/ongoingauction' className='text-lg font-bold text-white bg-[#A3A4A1] rounded-3xl px-5 py-1'>
               Ongoing Auction
             </Link>
             <Link href='/user/myorders' className='text-lg font-bold text-white bg-[#A3A4A1] rounded-3xl px-5 py-1'>

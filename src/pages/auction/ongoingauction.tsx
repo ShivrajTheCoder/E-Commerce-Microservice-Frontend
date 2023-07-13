@@ -1,4 +1,5 @@
 import AuctionItemCard from '@/components/AuctionScreenComponent/AuctionItemCard';
+import ErrorComponent from '@/components/ErrorComponent';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 interface AItem {
@@ -19,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ongoingauction() {
   const [aucItems, setAucItems] = useState<AItem[]>();
   const [loading, setLoading] = useState<Boolean>(true);
+  const [error,setError]=useState<string>("");
   const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
   useEffect(() => {
     // console.log("i ran")
@@ -30,12 +32,12 @@ export default function ongoingauction() {
         }
         else {
           // console.log("error");
-          toast.error("No Auction is live");
+          setError("No Auction is live");
         }
       })
       .catch(error => {
         // console.log(error);
-        toast.error("Something went wrong");
+        setError("No Auction is live");
       })
       .finally(() => {
         setLoading(false);
@@ -43,9 +45,11 @@ export default function ongoingauction() {
   }, [])
   return (
     <div className='mx-20 my-10 flex flex-col justify-center items-center'>
-      <h1 className='font-bold text-3xl my-10'>On Going Auctions</h1>
+      
       {
         (!loading && aucItems) &&
+        <>
+        <h1 className='font-bold text-3xl my-10'>On Going Auctions</h1>
         <div className=' w-full my-3'>
           {
             aucItems?.map(item => {
@@ -53,6 +57,10 @@ export default function ongoingauction() {
             })
           }
         </div>
+        </>
+      }
+      {
+        (!loading && error) && <ErrorComponent message={error}/>
       }
       <ToastContainer />
     </div>
