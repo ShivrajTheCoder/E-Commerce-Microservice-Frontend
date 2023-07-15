@@ -44,6 +44,7 @@ export default function Home() {
             // console.log("Logged in",resp.data)
             const {userId,token,isAdmin}=resp.data;
             dispatch(loggedInUser({userId,token,isAdmin}));
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             router.push("/home");
           }
           else{
