@@ -1,3 +1,4 @@
+import ErrorComponent from '@/components/ErrorComponent';
 import AuctionOrderCard from '@/components/OrderComponents/AuctionOrderCard';
 import { RootState } from '@/store/reducers';
 import axios from 'axios';
@@ -16,7 +17,7 @@ interface IAucOrder {
 export default function myaucorders() {
     const [isloading, setIsLoading] = useState<Boolean>(true);
     const [aucOrders, setAucOrders] = useState<IAucOrder[]>([]);
-    const [error, setError] = useState<any>();
+    const [error, setError] = useState<string>("");
     const user = useSelector((state: RootState) => state.user);
     const router = useRouter();
     const apiUrl=process.env.NEXT_PUBLIC_API_KEY;
@@ -34,12 +35,12 @@ export default function myaucorders() {
                     setAucOrders(resp.data.orders);
                 }
                 else {
-                    setError({ message: "Something went wrong!" });
+                    setError("Something went wrong!");
                 }
             }
             catch (error) {
                 // console.log(error);
-                setError(error);
+                setError("No auction won!");
             }
         }
         checkLogin();
@@ -56,6 +57,11 @@ export default function myaucorders() {
                         ))
                     }
                 </main>
+            }{
+                (!isloading && error) && 
+                <div className='mx-10 my-10'>
+                <ErrorComponent message={error} />
+                </div>
             }
         </section>
     )

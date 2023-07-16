@@ -72,11 +72,11 @@ export
                 const res = await axios.post(`${apiUrl}/orders/successpayment/${or_id}`, data)
                 if (res.status === 200) {
                   if (isAucOrder) {
-                    router.push("/user/myaucorders")
+                    router.push("/home")
                   }
                   else {
 
-                    router.push("/user/myorders");
+                    router.push("/home");
                   }
                 }
               }
