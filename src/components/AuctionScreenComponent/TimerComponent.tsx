@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface TimerProps {
@@ -6,7 +7,7 @@ interface TimerProps {
 
 const Timer: React.FC<TimerProps> = ({ endTime }) => {
   const [timer, setTimer] = useState<string>('');
-
+  const router=useRouter();
   useEffect(() => {
     const calculateTimeRemaining = () => {
       const now = new Date();
@@ -18,6 +19,7 @@ const Timer: React.FC<TimerProps> = ({ endTime }) => {
 
       if (timeRemaining <= 0) {
         setTimer('Auction Ended');
+        router.push("/home");
       } else {
         const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
